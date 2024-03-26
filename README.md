@@ -29,7 +29,6 @@ The UI of the Online Thrift Store is built using HTML and CSS. It provides a use
 [Include a component diagram showing the relationships between the user profile, cart, and chatbot services, along with any external dependencies.]
 
 ## Screenshots/GIFs
-[Include screenshots or animated GIFs demonstrating key features of the application, such as browsing items, adding items to the cart, and interacting with the chatbot.]
 
 ## Dependencies
 - Python Flask
@@ -48,12 +47,3 @@ The UI of the Online Thrift Store is built using HTML and CSS. It provides a use
 ## Citations
 
 ## Entrepreneurial Branding Elements
-
-
-
-
-## Modules
-
-## Languages and frameworks
-
-## UI
