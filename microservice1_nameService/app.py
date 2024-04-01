@@ -7,6 +7,9 @@ from flask_swagger_ui import get_swaggerui_blueprint
 app = Flask(__name__)
 api = Api(app)
 
-@app.route('/getName', methods=['GET'])
+@app.route('/', methods=['GET'])
 def get_name():
-    return jsonify({'name': 'Bob'})
+    return jsonify({'name': 'Alice'})
+
+if __name__ == '__main__':
+    app.run(debug=True)
