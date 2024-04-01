@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app-deployment
+  labels:
+    app: my-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+      - name: my-app-container
+        image: lhchi04/name:v1
+        ports:
+        - containerPort: 5000
+        env:
+          - name: DATA_MICROSERVICE
+            valueFrom:
+              configMapKeyRef:
+                name: my-config-map
+                key: DATA_MICROSERVICE
+
