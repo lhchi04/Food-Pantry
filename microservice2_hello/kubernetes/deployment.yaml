@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hello-service-deployment
+  name: hello-deployment
   labels:
-    app: hello-service
+    app: hello
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
-      app: hello-service
+      app: hello
   template:
     metadata:
       labels:
-        app: hello-service
+        app: hello
     spec:
       containers:
-      - name: hello-service-container
+      - name: hello-container
         image: lhchi04/hello:v1
         ports:
         - containerPort: 5000
@@ -23,6 +23,6 @@ spec:
           - name: DATA_MICROSERVICE
             valueFrom:
               configMapKeyRef:
-                name: hello-service-config-map
+                name: hello-config-map
                 key: DATA_MICROSERVICE
 

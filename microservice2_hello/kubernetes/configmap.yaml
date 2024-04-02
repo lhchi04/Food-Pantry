@@ -1,6 +1,6 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: hello-service-config-map
+  name: hello-config-map
 data:
   DATA_MICROSERVICE: MyOtherMicroservice
