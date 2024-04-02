@@ -29,6 +29,7 @@ The UI of the Online Thrift Store is built using HTML and CSS. It provides a use
 
 ## Component Diagram
 
+![Architecture](./uml-diagram.jpeg)
 
 ## Screenshots/GIFs
 
