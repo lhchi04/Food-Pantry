@@ -9,9 +9,10 @@
 3. Shazif Ahmed
 
 ## Description
-The Online Thrift Store is a web application that allows users to browse and add second-hand items to cart. The application consists of three main services:
-1. **User Profile Service**: Manages user registration, login, and profile management.
-2. **Cart Service**: Handles the shopping cart functionality, allowing users to add items and view the cart.
+The Online Thrift Store is a web application that allows users to browse and add second-hand items to cart. The application consists of 4 main services:
+1. **Product Page**: talks to **User Profile Service**, **Cart Service**, and **Chatbot Service**
+1. **User Profile Service**: Manages user registration, login, and profile management, talks to **Cart Service**
+2. **Cart Service**: Handles the shopping cart, allowing users to add items and view the cart, talks to **User Profile Service**.
 3. **Chatbot Service**: Utilizes artificial intelligence to provide assistance to users, answer queries related to products, and offer recommendations.
 
 The architecture of the application is designed with microservices in mind, leveraging Python Flask for building the services. Each service communicates with others via RESTful APIs, and the application is deployed on Kubernetes for scalability and reliability.
@@ -22,11 +23,12 @@ The UI of the Online Thrift Store is built using HTML and CSS. It provides a use
 ## Build, Run, Deployment Instructions
 
 
+
 ## Application Usage Instructions
 [Provide instructions for users on how to interact with the application. Include how to register, browse items, add items to the cart, and use the chatbot feature.]
 
 ## Component Diagram
-[Include a component diagram showing the relationships between the user profile, cart, and chatbot services, along with any external dependencies.]
+
 
 ## Screenshots/GIFs
 
