@@ -11,17 +11,17 @@ api = Api(app)
 
 @app.route('/', methods=['GET'])
 def hello():
-    r = requests.get('http://name-svc')    
-    # r = requests.get('http://localhost:31313/')
+    r = requests.get('http://name-svc:80') 
+    # return r.json()
 
-    if r.status_code == 200:
-        print("Request successful")
-        print(r.text)
-    else:
-        print("Request failed with status code:", r.status_code)
-    # data = r.json()
-    # print(data)
-    # return render_template('index.html', username = str(data.name))
+    # if r.status_code == 200:
+    #     print("Request successful")
+    #     print(r.text)
+    # else:
+    #     print("Request failed with status code:", r.status_code)
+    data = r.json()
+    print(data)
+    return render_template('index.html', username=data['name'])
 
 if __name__ == '__main__':
     app.run(debug=True)
