@@ -1,28 +1,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: name-deployment
+  name: catalog-deployment
   labels:
-    app: name
+    app: catalog
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: name
+      app: catalog
   template:
     metadata:
       labels:
-        app: name
+        app: catalog
     spec:
       containers:
-      - name: name-container
-        image: lhchi04/name:v1
+      - name: catalog-container
+        image: lhchi04/catalog:v1
         ports:
         - containerPort: 5000
         env:
           - name: DATA_MICROSERVICE
             valueFrom:
               configMapKeyRef:
-                name: name-config-map
+                name: catalog-config-map
                 key: DATA_MICROSERVICE
 

@@ -1,28 +1,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hello-deployment
+  name: cart-deployment
   labels:
-    app: hello
+    app: cart
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: hello
+      app: cart
   template:
     metadata:
       labels:
-        app: hello
+        app: cart
     spec:
       containers:
-      - name: hello-container
-        image: lhchi04/hello:v1
+      - name: cart-container
+        image: lhchi04/cart:v1
         ports:
         - containerPort: 5000
         env:
           - name: DATA_MICROSERVICE
             valueFrom:
               configMapKeyRef:
-                name: hello-config-map
+                name: cart-config-map
                 key: DATA_MICROSERVICE
 

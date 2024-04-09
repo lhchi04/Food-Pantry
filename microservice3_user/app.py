@@ -9,7 +9,6 @@ app = Flask(__name__)
 api = Api(app)
 
 users = dict() # Store usernames and passwords
-# taken_usernames = set() # Store existed usernames
 
 @app.route('/signup', methods=['POST'])
 def sign_up():
@@ -35,17 +34,17 @@ def login():
         return jsonify({'session': hex(hash(name + "secret" + str(current_time)))}), 200
 
 # Swagger UI configuration
-SWAGGER_URL = '/swagger'
-API_URL = '/static/swagger.json'
+# SWAGGER_URL = '/swagger'
+# API_URL = '/static/swagger.json'
 
-swaggerui_blueprint = get_swaggerui_blueprint(
-    SWAGGER_URL,
-    API_URL,
-    config={
-        'app_name': "User Authentication API"
-    }
-)
-app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
+# swaggerui_blueprint = get_swaggerui_blueprint(
+#     SWAGGER_URL,
+#     API_URL,
+#     config={
+#         'app_name': "User Authentication API"
+#     }
+# )
+# app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 
 if __name__ == '__main__':
     app.run(debug=True)
