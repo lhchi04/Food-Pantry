@@ -1,4 +1,4 @@
 Flask
 Flask-RESTful
-flask_swagger_ui
+# flask_swagger_ui
 requests

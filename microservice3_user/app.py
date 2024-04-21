@@ -32,19 +32,14 @@ def login():
     else:
         current_time = time.time()
         return jsonify({'session': hex(hash(name + "secret" + str(current_time)))}), 200
+    
+@app.route('/profile', methods=['GET'])
+def profile():
+    # Retrieve user profile information based on session or user ID
+    # You can customize this function to return user-specific data
+    # For example, you can retrieve user data from a database
+    return jsonify({'message': 'Welcome to your profile!'})
 
-# Swagger UI configuration
-# SWAGGER_URL = '/swagger'
-# API_URL = '/static/swagger.json'
-
-# swaggerui_blueprint = get_swaggerui_blueprint(
-#     SWAGGER_URL,
-#     API_URL,
-#     config={
-#         'app_name': "User Authentication API"
-#     }
-# )
-# app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5002)

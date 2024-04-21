@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pantry</title>
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"> -->
+</head>
+<body>
+    <h1>Food Pantry</h1>
+    <div id="items">
+        <h2>Available Items</h2>
+        <ul>
+            <li><a href="http://localhost:31319/pantry/1" onclick="getItemDescription(1)">Apple</a></li>
+            <li><a href="http://localhost:31319/pantry/2" onclick="getItemDescription(2)">Banana</a></li>
+            <li><a href="http://localhost:31319/pantry/3" onclick="getItemDescription(3)">Flour</a></li>
+            <li><a href="http://localhost:31319/pantry/4" onclick="getItemDescription(4)">Sugar</a></li>
+            <li><a href="http://localhost:31319/pantry/5" onclick="getItemDescription(5)">Milk</a></li>
+        </ul>
+    </div>
+    <div id="itemDescription">
+        <!-- This div will display the details of the selected item -->
+    </div>
+    <button id="profileButton">Go to Profile</button>
+    
+    <script>
+        // Function to handle button click
+        document.getElementById("profileButton").addEventListener("click", function() {
+            goToProfile();
+        });
+
+        // Function to make a request to the profile route
+        function goToProfile() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "http://user-svc:80/profile", true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        // Handle successful response
+                        console.log("Successfully reached profile route.");
+                    } else {
+                        // Handle error response
+                        console.error("Error reaching profile route:", xhr.status, xhr.statusText);
+                    }
+                }
+            };
+            xhr.send();
+        }
+        function getItemDescription(itemId) {
+            let linkToPantry = "http://localhost:31319/pantry/";
+            let numId = itemId.toString();
+            let link = linkToPantry.concat(numId);
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", link, true); // Adjust URL
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        // Handle successful response
+                        console.log("abc")
+                        // var item = JSON.parse(xhr.responseText);
+                        // print(item)
+                        // document.getElementById("itemDescription").innerText = "Item Description: " + item;
+                    } else {
+                        // Handle error response
+                        console.error("Error getting item description:", xhr.status, xhr.statusText);
+                    }
+                }
+            };
+            xhr.send();
+        }
+    </script>
+</body>
+</html>

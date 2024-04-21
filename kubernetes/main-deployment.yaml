@@ -1,28 +1,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: pantry-deployment
+  name: main-deployment
   labels:
-    app: pantry
+    app: main
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: pantry
+      app: main
   template:
     metadata:
       labels:
-        app: pantry
+        app: main
     spec:
       containers:
-      - name: pantry-container
-        image: lhchi04/pantry:v1
+      - name: main-container
+        image: lhchi04/main:v1
         ports:
         - containerPort: 5000
         env:
           - name: DATA_MICROSERVICE
             valueFrom:
               configMapKeyRef:
-                name: pantry-config-map
+                name: main-config-map
                 key: DATA_MICROSERVICE
 

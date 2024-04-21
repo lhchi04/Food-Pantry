@@ -1,0 +1,119 @@
+@font-face {
+  font-family: 'Mops';
+  src: url(mops.ttf) format('truetype');
+}
+
+@media screen and (max-width: 700px) {
+  div#picture {
+    display: none;
+  }
+  div#signupForm, div#loginForm {
+    flex-grow: 1;
+    justify-content: center;
+  }
+  h2, h3 {
+    text-align: center;
+  }
+  .grid-container, .aside {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .grid-container {
+    margin: auto;
+  }
+}
+
+html {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  margin: 0;
+  font-family: "Josefin Sans";
+  /* background-image: url("pusheenbg.png"); */
+  background-blend-mode:soft-light;
+  background-color: rgb(181, 154, 232);
+  min-height: 100%;
+}
+
+h1 {
+  font-size: 50px;
+  text-align: center;
+  margin-top: 70px;
+  /* font-family: 'Black Burger';
+  src: url('BlackBurgerRough.ttf') format('truetype'); */
+}
+
+img {
+  margin: auto;
+}
+
+#loginForm, #signupForm {
+  flex-basis: 60%;
+  flex-shrink: 1;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+}
+
+.grid-container {
+  position: relative;
+  box-sizing: border-box;
+  max-width: 500px;
+  display: grid;
+  grid-gap: 45px;
+  grid-template-columns: repeat(auto-fit, minmax(186px, 200px));
+}
+
+input {
+  font-family: inherit;
+  width: 200px;
+  padding: 0;
+  margin: 5px;
+  display: block;
+  box-sizing: border-box;
+  border-radius: 10px;
+  height: 30px;
+}
+
+input:focus {
+  box-shadow: 0px 0px 25px 9px rgba(196, 186, 186, 0.303);
+}
+
+input:invalid {
+  border-color: red;
+}
+
+input:valid {
+  border-color: green;
+}
+
+button {
+  font-family: inherit;
+  background-color: brown;
+  color: white;
+  font-size: larger;
+  padding: 10px 40px;
+  font-weight: bold;
+  border-radius: 16px;
+  transition: 450ms;
+  border-width: 3px;
+}
+
+button:hover,
+button:focus {
+  transition: 150ms ease-in-out;
+  background-color: rgba(226, 209, 209, 0.2);
+  color: rgb(126, 23, 23);
+  border-color: brown;
+}
+
+a {
+  text-decoration: none;
+  color: rgb(143, 34, 34);
+}

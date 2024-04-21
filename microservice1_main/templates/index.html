@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" type="text/css" href="./static/styles.css"> -->
+    <title>Login or Sign Up</title>
+</head>
+<body>
+    <h1>Welcome to Food Pantry!</h1>
+    <div class="grid-container">
+        <form id="loginForm">
+            <label for="username">Username:</label><br>
+            <input type="text" id="username" name="username" required><br>
+            <label for="password">Password:</label><br>
+            <input type="password" id="password" name="password" required><br><br>
+            <input type="submit" value="Login">
+        </form>
+        <form id="signupForm">
+            <label for="newUsername">New Username:</label><br>
+            <input type="text" id="newUsername" name="newUsername" required><br>
+            <label for="newPassword">New Password:</label><br>
+            <input type="password" id="newPassword" name="newPassword" required><br><br>
+            <input type="submit" value="Sign Up">
+        </form>
+    </div>
+    <div id="message"></div>
+
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            loginUser();
+        });
+    
+        document.getElementById("signupForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            signUpUser();
+        });
+    
+        function loginUser() {
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/login", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        window.location.href = "/pantry"; // Redirect to pantry page
+                    } else {
+                        document.getElementById("message").innerHTML = "Error: " + JSON.parse(xhr.responseText).error;
+                    }
+                }
+            };
+            xhr.send(JSON.stringify({name: username, pwd: password}));
+        }
+    
+        function signUpUser() {
+            var newUsername = document.getElementById("newUsername").value;
+            var newPassword = document.getElementById("newPassword").value;
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/signup", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        window.location.href = "/pantry"; // Redirect to pantry page
+                    } else {
+                        document.getElementById("message").innerHTML = "Error: " + JSON.parse(xhr.responseText).error;
+                    }
+                }
+            };
+            xhr.send(JSON.stringify({name: newUsername, pwd: newPassword}));
+        }
+    </script>
+</body>
+</html>
