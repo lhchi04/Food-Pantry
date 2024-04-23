@@ -1,55 +1,72 @@
-import os
-import json
-from flask import Flask, request, jsonify
+from flask import Flask, jsonify, render_template, request, redirect
 import requests
+from redis import Redis
 
 app = Flask(__name__)
+redis = Redis(host='localhost', port=6379)
 
-# Mock data for available items in the food pantry
-available_items = [
-    {"id": 1, "name": "Apple"},
-    {"id": 2, "name": "Banana"},
-    {"id": 3, "name": "Flour"},
-    {"id": 4, "name": "Sugar"},
-    {"id": 5, "name": "Milk"}
-]
+def get_selected_items():
+    selected_items = []
+    for item_id in redis.smembers('selected_items'):
+        item = next((item for item in available_items if item['id'] == int(item_id.decode('utf-8'))), None)
+        if item:
+            selected_items.append(item)
+    return selected_items
 
-# Endpoint to list available items in the food pantry
-@app.route('/pantry/items', methods=['GET'])
-def list_items():
-    return jsonify(available_items)
+@app.route('/', methods=['GET'])
+def main_page():
+    return render_template('recipe.html')
 
-# Endpoint to allow clients to select items from the food pantry by specifying IDs
-selected_items = []
+# Your API key for Spoonacular
+api_key = 'ffaeea8303ac4006bac35629dc34f9a7'
 
-@app.route('/pantry/select', methods=['POST'])
-def select_items_by_ids():
-    if request.method == 'POST':
-        data = request.get_json()
-        selected_ids = data.get('selected_ids', [])
+@app.route('/recipes', methods=['GET'])
+def get_recipes():
+    # Fetch selected items from Redis
+    items = [item.decode('utf-8') for item in redis.smembers('selected_items')]
 
-        # Clear the previous selection and update with the new one
-        selected_items.clear()
-        for item_id in selected_ids:
-            item = next((item for item in available_items if item['id'] == item_id), None)
-            if item:
-                selected_items.append(item)
+    ingredients_string = ','.join(items)
 
-        # Return a success message
-        return jsonify({'message': 'Items selected successfully', 'selected_items': selected_items})
+    # Call Spoonacular API to fetch recipes
+    url = f'https://api.spoonacular.com/recipes/findByIngredients?ingredients={ingredients_string}&number=2&apiKey={api_key}'
+
+    params = {
+        'apiKey': api_key,
+        'number': 5,  # Fetch 5 random recipes
+        'instructionsRequired': True  # Include instructions in the response
+    }
+    response = requests.get(url, params=params)
+
+@app.route('/random-recipes', methods=['GET'])
+def get_random_recipes_page():
+    return render_template('random-recipes.html')
+
+@app.route('/random-recipes', methods=['GET'])
+def get_random_recipes():
+    # Call Spoonacular API to fetch random recipes
+    url = 'https://api.spoonacular.com/recipes/random'
+    params = {
+        'apiKey': api_key,
+        'number': 5,  # Fetch 5 random recipes
+        'instructionsRequired': True  # Include instructions in the response
+    }
+    response = requests.get(url, params=params)
+
+    # Return the response from Spoonacular API
+    if response.status_code == 200:
+        recipes = response.json()['recipes']
+        # Extract relevant information for each recipe
+        formatted_recipes = []
+        for recipe in recipes:
+            recipe_info = {
+                'title': recipe['title'],
+                'ingredients': [{'name': ingredient['name'], 'quantity': ingredient['amount'], 'unit': ingredient['unit']} for ingredient in recipe['extendedIngredients']],
+                'steps': recipe['instructions'].split('\n') if 'instructions' in recipe else []
+            }
+            formatted_recipes.append(recipe_info)
+        return jsonify(formatted_recipes)
     else:
-        return jsonify({"error": "Method Not Allowed"}), 405
+        return jsonify({'error': 'Failed to fetch recipes'}), 500
 
-# Endpoint to generate recipes based on selected items
-@app.route('/pantry/recipes', methods=['GET'])
-def generate_recipes():
-    # Call Recipe Microservice to generate recipes based on selected items
-    recipe_response = requests.get('http://localhost:5001/recipes', params={'items': [item['name'] for item in selected_items]})
-    if recipe_response.status_code == 200:
-        recipes = recipe_response.json()
-        return jsonify(recipes)
-    else:
-        return jsonify({'error': 'Failed to generate recipes'}), 500
-    
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5001)

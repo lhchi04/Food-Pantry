@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pantry</title>
+</head>
+<body>
+    <h1>Pantry</h1>
+    
+    <h2>Available Items</h2>
+    <form id="pantryForm" action="/select-items" method="post">
+        <ul id="available-items">
+            {% for item in items %}
+                <li>
+                    <input type="checkbox" class="item-checkbox" name="item" value="{{ item.id }}">
+                    {{ item.name }}
+                </li>
+            {% endfor %}
+        </ul>
+        <button type="submit" id="addToCartButton">Add to Cart</button>
+    </form>
+    
+    <h2>Cart</h2>
+    <ul id="cart" style="display:none;">
+        <!-- Cart items will be dynamically added here -->
+    </ul>
+    
+    <!-- Fetch Recipe button -->
+    <button id="fetchRecipesButton">Fetch Recipes</button>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const addToCartButton = document.getElementById('addToCartButton');
+
+            addToCartButton.addEventListener('click', function() {
+                const checkboxes = document.querySelectorAll('.item-checkbox:checked');
+                const selectedItems = Array.from(checkboxes).map(checkbox => checkbox.value);
+
+                // Send selected item IDs to Flask to update selected_items
+                fetch('/select-items', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ items: selectedItems })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Items added to cart');
+                    } else {
+                        throw new Error('Failed to add items to cart');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+
+            const fetchRecipesButton = document.getElementById('fetchRecipesButton');
+            fetchRecipesButton.addEventListener('click', function(event) {
+                event.preventDefault();
+                fetchRecipes();
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const addToCartButton = document.getElementById('addToCartButton');
+            const cart = document.getElementById('cart');
+
+            addToCartButton.addEventListener('click', function(event) {
+                event.preventDefault();
+                const checkboxes = document.querySelectorAll('.item-checkbox:checked');
+                const selectedItems = Array.from(checkboxes).map(checkbox => checkbox.nextSibling.textContent.trim());
+
+                // Clear previous items
+                cart.innerHTML = '';
+
+                // Add selected items to the cart
+                selectedItems.forEach(item => {
+                    const li = document.createElement('li');
+                    li.textContent = item;
+                    cart.appendChild(li);
+                });
+
+                // Show the cart
+                cart.style.display = 'block';
+            });
+
+            // Fetch recipes when the page loads
+            fetch('/fetch-recipes', {
+                method: 'GET',
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Failed to fetch recipes');
+                }
+            })
+            .then(recipes => {
+                console.log(recipes);
+                // Handle recipes here
+            })
+            .catch(error => {
+                console.error('Error fetching recipes:', error);
+            });
+        });
+    </script>
+</body>
+</html>
