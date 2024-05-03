@@ -35,7 +35,6 @@ The UI of the Online Thrift Store is built using HTML and CSS, offering an intui
 ## Screenshots/GIFs
 
 ## Dependencies
-- Python Flask
 - Flask-RESTful
 - spoonacular API (for recipe generation)
 - Kubernetes
