@@ -1,8 +1,8 @@
 # cpsc415-project
-# Recipe Store
+# Food Pantry
 
 ## Application and purpose
-RecipeFinder is a comprehensive web application designed to simplify the process of discovering and generating recipes based on selected ingredients. Our purpose is to offer users a seamless experience in finding and creating delicious meals using our ingredients.
+Food Pantry is a comprehensive web application designed to simplify the process of discovering and generating recipes based on selected ingredients. Our purpose is to offer users a seamless experience in finding and creating delicious meals using our ingredients.
 
 ## Members
 1. Chi Le
@@ -10,26 +10,28 @@ RecipeFinder is a comprehensive web application designed to simplify the process
 3. Shazif Ahmed
 
 ## Description
-The Online Thrift Store is a web application that allows users to browse and add second-hand items to cart. The application consists of 4 main services:
+The Food Pantry is a web application that allows users to browse and add second-hand items to cart. The application consists of 4 main services:
 1. **Main Page**: Serves as the central hub, facilitating communication between other services and managing the overall workflow.
-Acts as the central hub, talks to **User Service**, **Catalogue Service**, and **Recipe Service**
 1. **User Service**: Handles user registration, login, and profile management.
-Manages user registration, login, and profile management, talks to **Recipe Service**
 2. **Catalogue Service**: Displays a catalog of available ingredients for users to select from.
-Displays available ingredients for users to select from, talks to **User Service** and **Recipe Service**.
 3. **Recipe Service**: Generates recipes based on the ingredients chosen by the user.
 
 The architecture of the application is designed with microservices in mind, leveraging Python Flask for building the services. Each service communicates with others via RESTful APIs, and the application is deployed on Kubernetes for scalability and reliability.
 
 ## UI
-The UI of the Online Thrift Store is built using HTML and CSS, offering an intuitive experience for selecting ingredients and viewing generated recipes.
+The UI of the Food Pantry is built using HTML and CSS, offering an intuitive experience for selecting ingredients and viewing generated recipes.
 
 ## Build, Run, Deployment Instructions
+To build and run the application locally, follow these steps:
 
+1. **Clone the Repository**: Clone this repository to your local machine using the following command:
+
+    ```bash
+    git clone https://github.com/lhchi04/Food-Pantry.git
+    ```
 
 
 ## Application Usage Instructions
-[Provide instructions for users on how to interact with the application. Include how to register, browse items, add items to the cart, and use the chatbot feature.]
 
 ## Component Diagram
 
@@ -45,7 +47,7 @@ The UI of the Online Thrift Store is built using HTML and CSS, offering an intui
 
 ## Features (Minimum Viable Product)
 - User registration and authentication
-- Browse available ingredients
+- Browse available ingredients in the pantry
 - Select ingredients
 - Generate recipes based on selected ingredients
 
@@ -54,8 +56,8 @@ The UI of the Online Thrift Store is built using HTML and CSS, offering an intui
 1. **User Authentication**: The Main Service sends user authentication requests to the User Service, including login credentials and registration data.
 2. **User Profile Management**: The User Service provides endpoints for managing user profiles, allowing the Main Service to retrieve and update user information.
 
-### Main Service and Catalogue Service
-1. **Ingredient Catalog**: The Catalogue Service sends ingredient data to the Main Service, allowing users to browse and select ingredients for recipe generation.
+### Main Service and Pantry Service
+1. **Ingredient Pantry**: The Pantry Service sends ingredient data to the Main Service, allowing users to browse and select ingredients for recipe generation.
 
 ### Main Service and Recipe Service
 1. **Recipe Generation Requests**: The Main Service forwards user-selected ingredients and preferences to the Recipe Service to generate personalized recipes.
