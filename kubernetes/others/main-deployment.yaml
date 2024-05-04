@@ -19,6 +19,13 @@ spec:
       - name: main-container
         image: lhchi04/main:0.0.2
         imagePullPolicy: Always
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
         ports:
         - containerPort: 5000
         env:
