@@ -1,45 +1,49 @@
-import os
-import json
 from flask import Flask, request, jsonify
-from flask_restful import Api
-from flask_swagger_ui import get_swaggerui_blueprint
-import time
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
-api = Api(app)
 
-users = dict() # Store usernames and passwords
+# Placeholder for user storage, replace with database integration
+users = {}
 
 @app.route('/signup', methods=['POST'])
-def sign_up():
-    user_info = request.json
-    name = user_info['name']
-    password = user_info['pwd']
-    if name in users:
-        return jsonify({'error': 'Username is already taken'}), 401
-    else:
-        current_time = time.time()        
-        users[name] = password
-        return jsonify({'session': hex(hash(name + "secret" + str(current_time)))}), 200
+def signup():
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
     
+    if username in users:
+        return jsonify({'error': 'User already exists'}), 409
+    
+    hashed_password = generate_password_hash(password)
+    users[username] = {'password': hashed_password}
+    
+    return jsonify({'message': 'User registered successfully'}), 201
+
 @app.route('/login', methods=['POST'])
 def login():
-    user_info = request.json
-    name = user_info['name']
-    password = user_info['pwd']
-    if name not in users or users[name] != password:
-        return jsonify({'error': 'Invalid username or password'}), 401
-    else:
-        current_time = time.time()
-        return jsonify({'session': hex(hash(name + "secret" + str(current_time)))}), 200
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
     
-@app.route('/profile', methods=['GET'])
-def profile():
-    # Retrieve user profile information based on session or user ID
-    # You can customize this function to return user-specific data
-    # For example, you can retrieve user data from a database
-    return jsonify({'message': 'Welcome to your profile!'})
+    user = users.get(username)
+    if user and check_password_hash(user['password'], password):
+        return jsonify({'message': 'Login successful', 'user_id': username}), 200
+    
+    return jsonify({'error': 'Invalid credentials'}), 401
 
+@app.route('/profile/<username>', methods=['GET', 'PUT'])
+def profile(username):
+    if request.method == 'GET':
+        user = users.get(username)
+        if not user:
+            return jsonify({'error': 'User not found'}), 404
+        return jsonify({'username': username, 'profile': user})
+    else:
+        data = request.get_json()
+        if 'password' in data:
+            users[username]['password'] = generate_password_hash(data['password'])
+        return jsonify({'message': 'Profile updated successfully'}), 200
 
 if __name__ == '__main__':
     app.run(debug=True, port=5002)

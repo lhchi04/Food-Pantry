@@ -8,6 +8,6 @@ spec:
     app: pantry
   ports:
     - protocol: TCP
-      port: 80
-      targetPort: 5000
+      port: 5003
+      targetPort: 5003
       nodePort: 31319

@@ -5,7 +5,7 @@ metadata:
   labels:
     app: pantry
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: pantry
@@ -16,9 +16,10 @@ spec:
     spec:
       containers:
       - name: pantry-container
-        image: lhchi04/pantry:v1
+        image: lhchi04/pantry:v2
+        imagePullPolicy: Always
         ports:
-        - containerPort: 5000
+        - containerPort: 5003
         env:
           - name: DATA_MICROSERVICE
             valueFrom:

@@ -5,7 +5,7 @@ metadata:
   labels:
     app: main
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: main
@@ -16,7 +16,8 @@ spec:
     spec:
       containers:
       - name: main-container
-        image: lhchi04/main:v1
+        image: lhchi04/main:v2
+        imagePullPolicy: Always
         ports:
         - containerPort: 5000
         env:

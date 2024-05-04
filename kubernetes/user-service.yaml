@@ -8,6 +8,6 @@ spec:
     app: user
   ports:
     - protocol: TCP
-      port: 80
-      targetPort: 5000
+      port: 5002
+      targetPort: 5002
       nodePort: 31315

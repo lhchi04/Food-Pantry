@@ -13,7 +13,7 @@ Food Pantry is a comprehensive web application designed to simplify the process 
 The Food Pantry is a web application that allows users to browse and add second-hand items to cart. The application consists of 4 main services:
 1. **Main Page**: Serves as the central hub, facilitating communication between other services and managing the overall workflow.
 1. **User Service**: Handles user registration, login, and profile management.
-2. **Catalogue Service**: Displays a catalog of available ingredients for users to select from.
+2. **Pantry Service**: Displays a pantry of available ingredients for users to select from.
 3. **Recipe Service**: Generates recipes based on the ingredients chosen by the user.
 
 The architecture of the application is designed with microservices in mind, leveraging Python Flask for building the services. Each service communicates with others via RESTful APIs, and the application is deployed on Kubernetes for scalability and reliability.

@@ -5,7 +5,7 @@ metadata:
   labels:
     app: user
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: user
@@ -16,9 +16,10 @@ spec:
     spec:
       containers:
       - name: user-container
-        image: lhchi04/user:v1
+        image: lhchi04/user:v2
+        imagePullPolicy: Always
         ports:
-        - containerPort: 5000
+        - containerPort: 5002
         env:
           - name: DATA_MICROSERVICE
             valueFrom:

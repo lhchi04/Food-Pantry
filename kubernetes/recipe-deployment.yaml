@@ -1,28 +1,29 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cart-deployment
+  name: recipe-deployment
   labels:
-    app: cart
+    app: recipe
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
-      app: cart
+      app: recipe
   template:
     metadata:
       labels:
-        app: cart
+        app: recipe
     spec:
       containers:
-      - name: cart-container
-        image: lhchi04/cart:v1
+      - name: recipe-container
+        image: lhchi04/recipe:v2
+        imagePullPolicy: Always
         ports:
-        - containerPort: 5000
+        - containerPort: 5004
         env:
           - name: DATA_MICROSERVICE
             valueFrom:
               configMapKeyRef:
-                name: cart-config-map
+                name: recipe-config-map
                 key: DATA_MICROSERVICE
 

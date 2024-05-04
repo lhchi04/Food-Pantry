@@ -1,78 +1,89 @@
 import os
-import json
 import requests
-from flask import Flask, request, jsonify, redirect, render_template
+from flask import Flask, request, jsonify, redirect, render_template, session, url_for
 from flask_restful import Api
-# from flask_swagger_ui import get_swaggerui_blueprint
 
-app = Flask(__name__)
+# Configuration
+USER_SERVICE_URL = os.getenv('USER_SERVICE_URL', 'http://localhost:5002')
+PANTRY_SERVICE_URL = os.getenv('CATALOGUE_SERVICE_URL', 'http://localhost:5003')
+RECIPE_SERVICE_URL = os.getenv('RECIPE_SERVICE_URL', 'http://localhost:5004')
+
+app = Flask(__name__, template_folder='templates')
+app.secret_key = 'super_secret_key'  # Should be set to a real secret key in production
 api = Api(app)
 
-
 @app.route('/')
-def index():
-    return render_template('index.html')
+def home():
+    if 'user_id' in session:
+        return redirect(url_for('pantry'))
+    else:
+        return redirect(url_for('login'))
 
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    user_info = request.json
-    response = requests.post('http://user-svc:80/login', json=user_info)
-    if response.status_code == 200:
-        # return jsonify({'message': 'Login successful', 'data': response.json()}), 200
-        return redirect('/pantry')
-    else:
-        return jsonify({'error': 'Login failed', 'data': response.json()}), response.status_code
+    if request.method == 'POST':
+        response = requests.post(f'{USER_SERVICE_URL}/login', json=request.form.to_dict())
+        if response.status_code == 200:
+            session['user_id'] = response.json()['user_id']
+            return redirect(url_for('pantry'))
+        else:
+            return render_template('login.html', error='Login Failed')
+    return render_template('login.html')
 
-@app.route('/signup', methods=['POST'])
+@app.route('/signup', methods=['GET', 'POST'])
 def signup():
-    user_info = request.json
-    response = requests.post('http://user-svc:80/signup', json=user_info)
-    
-    if response.status_code == 200:
-        # return jsonify({'message': 'Signup successful', 'data': response.json()}), 200
-        return redirect('/pantry')
-    else:
-        error_message = f"Error: {response.status_code} - {response.reason}"
-        return jsonify({'error': 'Signup failed', 'data': response.json()}), response.status_code
+    if request.method == 'POST':
+        response = requests.post(f'{USER_SERVICE_URL}/signup', json=request.form.to_dict())
+        if response.status_code == 201:  # Handling the 'Created' status
+            session['user_id'] = response.json().get('user_id', None)
+            return redirect(url_for('pantry'))
+        elif response.status_code == 200:
+            session['user_id'] = response.json()['user_id']
+            return redirect(url_for('pantry'))
+        else:
+            return render_template('signup.html', error='Signup Failed')
+    return render_template('signup.html')
 
-@app.route('/pantry')
+@app.route('/user_profile/<username>')
+def user_profile(username):
+    if 'user_id' not in session or session['user_id'] != username:
+        return redirect(url_for('login'))
+    response = requests.get(f'{USER_SERVICE_URL}/profile/{username}')
+    if response.status_code == 200:
+        profile_info = response.json()
+        return render_template('profile.html', profile=profile_info)
+    else:
+        return "Error loading profile", response.status_code
+
+@app.route('/update_profile/<username>', methods=['POST'])
+def update_profile(username):
+    if 'user_id' not in session or session['user_id'] != username:
+        return redirect(url_for('login'))
+    new_password = request.form.get('password')
+    response = requests.put(f'{USER_SERVICE_URL}/profile/{username}', json={'password': new_password})
+    if response.status_code == 200:
+        return redirect(url_for('user_profile', username=username))
+    else:
+        return "Error updating profile", response.status_code
+
+@app.route('/logout')
+def logout():
+    session.clear()  # Clears all data in the session
+    return redirect(url_for('login'))
+
+@app.route('/pantry', methods=['GET', 'POST'])
 def pantry():
-    # Render your catalog page here
-    response = requests.get('http://pantry-svc/pantry')
-    if response.status_code == 200:
-        items = response.json()
-        return render_template('pantry.html', items=items)
-    else:
-        return jsonify({'error': 'Failed to fetch pantry items'}), response.status_code
-
-# if __name__ == '__main__':
-#     parser = argparse.ArgumentParser()
-#     parser.add_argument('--port', type=int, default=8000, help='Port number')
-#     args = parser.parse_args()
-#     app.run(debug=True, port=args.port)
-
-# login = input('Do you want to log in (1) or sign up (2)?')
-# if login == 1:
-#     username = input('Username: ')
-#     password = input('Password: ')
-#     r = requests.post('http://127.0.0.1:5000/login', json = {'name': username, 'pwd': password})
-# else:
-#     username = input('Username: ')
-#     password = input('Password: ')
-#     r = requests.post('http://127.0.0.1:5000/signup', json = {'name': username, 'pwd': password})
-# # data = r.json()
-# # print(r.json())
-# if r.status_code == 200:
-#     print("Request successful!")
-#     try:
-#         print(r.json())
-#     except Exception as e:
-#         print("Error decoding JSON:", e)
-# else:
-#     print("Request failed with status code:", r.status_code)
-#     print("Response content:", r.text)
-# print('Hello'+data['name'])
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    if request.method == 'GET':
+        response = requests.get(f'{PANTRY_SERVICE_URL}/pantry_items')
+        if response.status_code == 200:
+            items = response.json()
+            return render_template('pantry.html', items=items)
+        else:
+            return jsonify({'error': 'Failed to fetch pantry items'}), response.status_code
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
+
 

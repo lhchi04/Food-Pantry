@@ -1,47 +1,31 @@
-from flask import Flask, render_template, request, jsonify, redirect
-import requests
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 
 app = Flask(__name__)
 
-# Placeholder data for available items
-available_items = [
-    {"id": 1, "name": "Apple"},
-    {"id": 2, "name": "Banana"},
-    {"id": 3, "name": "Flour"},
-    {"id": 4, "name": "Sugar"},
-    {"id": 5, "name": "Milk"}
-]
+pantry_items = {
+    1: {'name': 'Pasta', 'quantity': 50},
+    2: {'name': 'Tomato Sauce', 'quantity': 30},
+    3: {'name': 'Beans', 'quantity': 20},
+    4: {'name': 'Rice', 'quantity': 40},
+    5: {'name': 'Tuna', 'quantity': 25}
+}
 
-# Placeholder data for selected items
-selected_items = []
+@app.route('/pantry_items', methods=['GET'])
+def get_pantry_items():
+    return jsonify(pantry_items)
 
-@app.route('/')
-def index():
-    return render_template('pantry.html', items=available_items)
+@app.route('/add_items_to_cart', methods=['POST'])
+def add_items_to_cart():
+    selected_items = request.json.get('items', [])
+    cart_items = {}
 
-@app.route('/select-items', methods=['POST'])
-def select_items():
-    if request.method == 'POST':
-        selected_ids = request.form.getlist('item')
-        for item_id in selected_ids:
-            item = next((item for item in available_items if item['id'] == int(item_id)), None)
-            if item and item not in selected_items:
-                selected_items.append(item)
-        return redirect('/')
+    for item_id in selected_items:
+        item_id = int(item_id)
+        if item_id in pantry_items and pantry_items[item_id]['quantity'] > 0:
+            cart_items[item_id] = pantry_items[item_id]
+            pantry_items[item_id]['quantity'] -= 1  # Reduce inventory
 
-@app.route('/fetch-recipes', methods=['GET'])
-def fetch_recipes():
-    items = [item['name'] for item in selected_items]
-    ingredients_string = ',+'.join(selected_items)
-    api_key = 'ffaeea8303ac4006bac35629dc34f9a7'
-    url = f'https://api.spoonacular.com/recipes/findByIngredients?ingredients={ingredients_string}&number=2&apiKey={api_key}'
-    response = requests.get(url)
-    if response.status_code == 200:
-        recipes = response.json()
-        return jsonify(recipes)
-    else:
-        return jsonify({'error': 'Failed to fetch recipes'}), 500
-
+    return jsonify(cart_items)
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(debug=True, port=5003)

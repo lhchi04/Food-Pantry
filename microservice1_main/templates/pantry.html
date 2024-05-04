@@ -3,71 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pantry</title>
-    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"> -->
+    <title>Pantry Items</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .profile-link {
+            display: inline-block;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Food Pantry</h1>
-    <div id="items">
-        <h2>Available Items</h2>
+    <h1>Select Pantry Items</h1>
+    <form action="{{ url_for('pantry') }}" method="post">
         <ul>
-            <li><a href="http://localhost:31319/pantry/1" onclick="getItemDescription(1)">Apple</a></li>
-            <li><a href="http://localhost:31319/pantry/2" onclick="getItemDescription(2)">Banana</a></li>
-            <li><a href="http://localhost:31319/pantry/3" onclick="getItemDescription(3)">Flour</a></li>
-            <li><a href="http://localhost:31319/pantry/4" onclick="getItemDescription(4)">Sugar</a></li>
-            <li><a href="http://localhost:31319/pantry/5" onclick="getItemDescription(5)">Milk</a></li>
+            {% for id, item in items.items() %}
+            <li>
+                <label>
+                    <input type="checkbox" name="items" value="{{ id }}">
+                    {{ item.name }} - Available: {{ item.quantity }}
+                </label>
+            </li>
+            {% endfor %}
         </ul>
-    </div>
-    <div id="itemDescription">
-        <!-- This div will display the details of the selected item -->
-    </div>
-    <button id="profileButton">Go to Profile</button>
-    
-    <script>
-        // Function to handle button click
-        document.getElementById("profileButton").addEventListener("click", function() {
-            goToProfile();
-        });
-
-        // Function to make a request to the profile route
-        function goToProfile() {
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", "http://user-svc:80/profile", true);
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4) {
-                    if (xhr.status === 200) {
-                        // Handle successful response
-                        console.log("Successfully reached profile route.");
-                    } else {
-                        // Handle error response
-                        console.error("Error reaching profile route:", xhr.status, xhr.statusText);
-                    }
-                }
-            };
-            xhr.send();
-        }
-        function getItemDescription(itemId) {
-            let linkToPantry = "http://localhost:31319/pantry/";
-            let numId = itemId.toString();
-            let link = linkToPantry.concat(numId);
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", link, true); // Adjust URL
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4) {
-                    if (xhr.status === 200) {
-                        // Handle successful response
-                        console.log("abc")
-                        // var item = JSON.parse(xhr.responseText);
-                        // print(item)
-                        // document.getElementById("itemDescription").innerText = "Item Description: " + item;
-                    } else {
-                        // Handle error response
-                        console.error("Error getting item description:", xhr.status, xhr.statusText);
-                    }
-                }
-            };
-            xhr.send();
-        }
-    </script>
+        <button type="submit">Check Cart</button>
+    </form>
+    <a href="{{ url_for('user_profile', username=session['user_id']) }}" class="profile-link">View Profile</a>
 </body>
 </html>
