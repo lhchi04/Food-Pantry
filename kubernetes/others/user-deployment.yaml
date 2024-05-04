@@ -1,29 +1,30 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: pantry-deployment
+  name: user-deployment
+  namespace: pan-user
   labels:
-    app: pantry
+    app: user
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: pantry
+      app: user
   template:
     metadata:
       labels:
-        app: pantry
+        app: user
     spec:
       containers:
-      - name: pantry-container
-        image: lhchi04/pantry:v2
+      - name: user-container
+        image: lhchi04/user:0.0.2
         imagePullPolicy: Always
         ports:
-        - containerPort: 5003
+        - containerPort: 5002
         env:
           - name: DATA_MICROSERVICE
             valueFrom:
               configMapKeyRef:
-                name: pantry-config-map
+                name: user-config-map
                 key: DATA_MICROSERVICE
 

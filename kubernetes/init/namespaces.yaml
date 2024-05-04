@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: pan-main
+  labels:
+    project: food-pantry
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: pan-user
+  labels:
+    project: food-pantry
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: pan-pantry
+  labels:
+    project: food-pantry
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: pan-recipe
+  labels:
+    project: food-pantry

@@ -1,6 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: main-config-map
+  name: pantry-config-map
+  namespace: pan-pantry
 data:
   DATA_MICROSERVICE: MyOtherMicroservice

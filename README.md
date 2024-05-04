@@ -29,6 +29,24 @@ To build and run the application locally, follow these steps:
     ```bash
     git clone https://github.com/lhchi04/Food-Pantry.git
     ```
+2. 
+    ```bash
+    docker build --platform linux/arm64,linux/amd64 -t lhchi04/main:v2 .
+    docker push lhchi04/main:v2
+    docker build --platform linux/arm64,linux/amd64 -t lhchi04/user:v2 .
+    docker push lhchi04/user:v2
+    docker build --platform linux/arm64,linux/amd64 -t lhchi04/pantry:v2 .
+    docker push lhchi04/pantry:v2
+    docker build --platform linux/arm64,linux/amd64 -t lhchi04/recipe:v2 .
+    docker push lhchi04/recipe:v2
+    ```
+3. 
+    ```bash
+    kubectl rollout restart -f deployment.yaml
+    kubectl apply -f kubernetes
+    ```
+
+
 
 
 ## Application Usage Instructions

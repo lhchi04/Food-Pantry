@@ -1,6 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: user-config-map
+  name: recipe-config-map
+  namespace: pan-recipe
 data:
   DATA_MICROSERVICE: MyOtherMicroservice

@@ -1,29 +1,30 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: user-deployment
+  name: main-deployment
+  namespace: pan-main
   labels:
-    app: user
+    app: main
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: user
+      app: main
   template:
     metadata:
       labels:
-        app: user
+        app: main
     spec:
       containers:
-      - name: user-container
-        image: lhchi04/user:v2
+      - name: main-container
+        image: lhchi04/main:0.0.2
         imagePullPolicy: Always
         ports:
-        - containerPort: 5002
+        - containerPort: 5000
         env:
           - name: DATA_MICROSERVICE
             valueFrom:
               configMapKeyRef:
-                name: user-config-map
+                name: main-config-map
                 key: DATA_MICROSERVICE
 
