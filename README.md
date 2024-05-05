@@ -28,26 +28,28 @@ To build and run the application locally, follow these steps:
 
     ```bash
     git clone https://github.com/lhchi04/Food-Pantry.git
+    cd Food-Pantry
     ```
-2. 
+2. **Build and push images**
     ```bash
-    docker build --platform linux/arm64,linux/amd64 -t lhchi04/main:0.0.3 .
-    docker push lhchi04/main:0.0.3
-    docker build --platform linux/arm64,linux/amd64 -t lhchi04/user:0.0.3 .
-    docker push lhchi04/user:0.0.3
-    docker build --platform linux/arm64,linux/amd64 -t lhchi04/pantry:0.0.3 .
-    docker push lhchi04/pantry:0.0.3
-    docker build --platform linux/arm64,linux/amd64 -t lhchi04/recipe:0.0.3 .
-    docker push lhchi04/recipe:0.0.3
+    docker build --platform linux/arm64,linux/amd64 -t username/main:0.1.0 .
+    docker build --platform linux/arm64,linux/amd64 -t username/user:0.1.0 .
+    docker build --platform linux/arm64,linux/amd64 -t username/pantry:0.1.0 .
+    docker build --platform linux/arm64,linux/amd64 -t username/recipe:0.1.0 .
+
+    docker push username/main:0.1.0
+    docker push username/user:0.1.0
+    docker push username/pantry:0.1.0
+    docker push username/recipe:0.1.0
     ```
-3. 
+3. **Deploy to Kubernetes**
     ```bash
-    kubectl rollout restart -f deployment.yaml
-    kubectl apply -f kubernetes
+    kubectl apply -f kubernetes/others
     ```
-
-
-
+4. **Verify deployment**
+    ```bash
+    kubectl get pods
+    ```
 
 ## Application Usage Instructions
 
@@ -85,3 +87,12 @@ Appropriate error messages or status codes are transmitted between the microserv
 
 ## Citations
 - Spoonacular API: https://spoonacular.com/food-api
+
+## License
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+### Additional Notes
+- **Docker Username**: Replace `username` with your actual Docker Hub username or your private registry URL.
+- **Customization**: Adjust paths and namespaces according to your actual Kubernetes setup and directory structure.
+
+This README provides a comprehensive guide for developers to set up and understand the Food Pantry application, including instructions for building, deploying, and maintaining the application. Adjust the document according to the specific paths and settings of your project structure as needed.

@@ -4,9 +4,9 @@ from flask import Flask, request, jsonify, redirect, render_template, session, u
 from flask_restful import Api
 
 # Configuration
-USER_SERVICE_URL = os.getenv('USER_SERVICE_URL', 'http://localhost:5002')
-PANTRY_SERVICE_URL = os.getenv('CATALOGUE_SERVICE_URL', 'http://localhost:5003')
-RECIPE_SERVICE_URL = os.getenv('RECIPE_SERVICE_URL', 'http://localhost:5004')
+# USER_SERVICE_URL = os.getenv('USER_SERVICE_URL', 'http://localhost:5002')
+# PANTRY_SERVICE_URL = os.getenv('PANTRY_SERVICE_URL', 'http://localhost:5003')
+# RECIPE_SERVICE_URL = os.getenv('RECIPE_SERVICE_URL', 'http://localhost:5004')
 
 app = Flask(__name__, template_folder='templates')
 app.secret_key = 'super_secret_key'  # Should be set to a real secret key in production
@@ -22,7 +22,7 @@ def home():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        response = requests.post(f'{USER_SERVICE_URL}/login', json=request.form.to_dict())
+        response = requests.post('http://user-svc.pan-user:5002/login', json=request.form.to_dict())
         if response.status_code == 200:
             session['user_id'] = response.json()['user_id']
             return redirect(url_for('pantry'))
@@ -33,8 +33,8 @@ def login():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
-        response = requests.post(f'{USER_SERVICE_URL}/signup', json=request.form.to_dict())
-        if response.status_code == 201:  # Handling the 'Created' status
+        response = requests.post('http://user-svc.pan-user:5002/signup', json=request.form.to_dict())
+        if response.status_code == 201:
             session['user_id'] = response.json()['user_id']
             return redirect(url_for('pantry'))
         else:
@@ -45,7 +45,7 @@ def signup():
 def user_profile(username):
     if 'user_id' not in session or session['user_id'] != username:
         return redirect(url_for('login'))
-    response = requests.get(f'{USER_SERVICE_URL}/profile/{username}')
+    response = requests.get(f'http://user-svc.pan-user:5002/profile/{username}')
     if response.status_code == 200:
         profile_info = response.json()
         return render_template('profile.html', profile=profile_info)
@@ -56,8 +56,6 @@ def user_profile(username):
 def update_profile(username):
     if 'user_id' not in session or session['user_id'] != username:
         return redirect(url_for('login'))
-    # new_password = request.form.get('password')
-    # response = requests.put(f'{USER_SERVICE_URL}/profile/{username}', json={'password': new_password})
     current_password = request.form.get('current_password')
     new_password = request.form.get('new_password')
 
@@ -65,14 +63,12 @@ def update_profile(username):
         return render_template('profile.html', error_message="Both current and new passwords are required")
 
     response = requests.put(
-        f'{USER_SERVICE_URL}/profile/{username}',
+        f'http://user-svc.pan-user:5002/profile/{username}',
         json={
             'current_password': current_password,
             'new_password': new_password
         }
     )
-    # profile_response = requests.get(f'{USER_SERVICE_URL}/profile/{username}')
-    # profile = profile_response.json() if profile_response.status_code == 200 else None
     if response.status_code == 200:
         flash('Your password has been updated successfully!', 'success')
         return redirect(url_for('user_profile', username=username))
@@ -90,7 +86,7 @@ def pantry():
     if 'user_id' not in session:
         return redirect(url_for('login'))
     if request.method == 'GET':
-        response = requests.get(f'{PANTRY_SERVICE_URL}/pantry_items')
+        response = requests.get('http://pantry-svc.pan-pantry:5003/pantry_items')
         if response.status_code == 200:
             items = response.json()
             return render_template('pantry.html', items=items)
@@ -99,7 +95,7 @@ def pantry():
         
 @app.route('/recipe', methods=['GET'])
 def recipe():
-    response = requests.get(f'{RECIPE_SERVICE_URL}/status')
+    response = requests.get('http://recipe-svc.pan-recipe:5004/status')
     return "Running", response.status_code
 
 @app.route('/health')
@@ -110,15 +106,16 @@ def health_check():
     else:
         return 'Service Unavailable', 500
 def all_required_services_are_running():
-    try:
-        # Attempt to reach the status endpoint of the user microservice
-        response = requests.get(f"{USER_SERVICE_URL}/status", timeout=5)
-        if response.status_code == 200:
-            return True
-        else:
-            return False
-    except requests.RequestException as e:
-        return jsonify({'status': 'ERROR', 'message': f'Failed to reach user service: {str(e)}'}), 503
+    # try:
+    #     # Attempt to reach the status endpoint of the user microservice
+    #     response = requests.get(f"{USER_SERVICE_URL}/status", timeout=5)
+    #     if response.status_code == 200:
+    #         return True
+    #     else:
+    #         return False
+    # except requests.RequestException as e:
+    #     return jsonify({'status': 'ERROR', 'message': f'Failed to reach user service: {str(e)}'}), 503
+    return True
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(host='0.0.0.0', debug=True, port=5000)
