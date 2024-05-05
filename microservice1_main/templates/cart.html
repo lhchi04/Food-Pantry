@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart</title>
+</head>
+<body>
+    <h1>Cart Items</h1>
+    <ul>
+        {% for name, quantity in cart.items() %}
+        <li>{{ name }} - Quantity: {{ quantity }}</li>
+        {% endfor %}
+    </ul>
+
+    <!-- Form to submit cart items to Recipe Microservice -->
+    <form action="http://localhost:5001/" method="post">
+        <!-- Create a hidden input for each item in the cart -->
+        {% for name, quantity in cart.items() %}
+        <input type="hidden" name="items" value="{{ name }}" data-quantity="{{ quantity }}">
+        {% endfor %}
+        <button type="submit">Get Recipe</button>
+    </form>
+</body>
+</html>

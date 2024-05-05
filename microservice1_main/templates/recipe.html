@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipes from Your Cart</title>
+    <style>
+        .recipe {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .recipe img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Recipes Based on Your Cart</h1>
+    <div>
+        {% for recipe in recipes %}
+        <div class="recipe">
+            <h2>{{ recipe.title }}</h2>
+            <img src="{{ recipe.image }}" alt="Recipe Image">
+            <p>Likes: {{ recipe.likes }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
