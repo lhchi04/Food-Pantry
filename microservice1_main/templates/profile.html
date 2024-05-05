@@ -147,7 +147,7 @@
         <h1><strong>Hi</strong> {{ profile['username'] }}<strong>!</strong></h1>
     </div>
     <!-- Form to update password -->
-    <form action="{{ url_for('update_profile', username=profile['username']) }}" method="post">
+    <form action="{{ url_for('user_profile', username=profile['username']) }}" method="post">
         <label for="current_password">Current Password:</label>
         <input type="password" id="current_password" name="current_password" required>
     

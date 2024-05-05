@@ -38,43 +38,40 @@ def signup():
             session['user_id'] = response.json()['user_id']
             return redirect(url_for('pantry'))
         else:
-            return render_template('signup.html', error='Signup Failed')
+            return render_template('signup.html', error='Username already exists')
     return render_template('signup.html')
 
-@app.route('/user_profile/<username>')
+@app.route('/user_profile/<username>', methods=['GET', 'POST'])
 def user_profile(username):
     if 'user_id' not in session or session['user_id'] != username:
         return redirect(url_for('login'))
-    response = requests.get(f'http://user-svc.pan-user:5002/profile/{username}')
-    if response.status_code == 200:
-        profile_info = response.json()
-        return render_template('profile.html', profile=profile_info)
+    if request.method == 'GET':
+        response = requests.get(f'http://user-svc.pan-user:5002/profile/{username}')
+        if response.status_code == 200:
+            profile_info = response.json()
+            return render_template('profile.html', profile=profile_info)
+        else:
+            return "Error loading profile", response.status_code
     else:
-        return "Error loading profile", response.status_code
+        current_password = request.form.get('current_password')
+        new_password = request.form.get('new_password')
 
-@app.route('/update_profile/<username>', methods=['POST'])
-def update_profile(username):
-    if 'user_id' not in session or session['user_id'] != username:
-        return redirect(url_for('login'))
-    current_password = request.form.get('current_password')
-    new_password = request.form.get('new_password')
+        if not current_password or not new_password:
+            return render_template('profile.html', error_message="Both current and new passwords are required")
 
-    if not current_password or not new_password:
-        return render_template('profile.html', error_message="Both current and new passwords are required")
-
-    response = requests.put(
-        f'http://user-svc.pan-user:5002/profile/{username}',
-        json={
-            'current_password': current_password,
-            'new_password': new_password
-        }
-    )
-    if response.status_code == 200:
-        flash('Your password has been updated successfully!', 'success')
-        return redirect(url_for('user_profile', username=username))
-    else:
-        flash('Failed to update password. Please check your current password and try again.', 'error')
-        return redirect(url_for('user_profile', username=username))
+        response = requests.put(
+            f'http://user-svc.pan-user:5002/profile/{username}',
+            json={
+                'current_password': current_password,
+                'new_password': new_password
+            }
+        )
+        if response.status_code == 200:
+            flash('Your password has been updated successfully!', 'success')
+            return redirect(url_for('user_profile', username=username))
+        else:
+            flash('Failed to update password. Please check your current password and try again.', 'error')
+            return redirect(url_for('user_profile', username=username))
 
 @app.route('/logout')
 def logout():
@@ -118,4 +115,4 @@ def all_required_services_are_running():
     return True
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True, port=5000)
+    app.run(debug=True, port=5000)

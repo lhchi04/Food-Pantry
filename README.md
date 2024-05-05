@@ -91,7 +91,7 @@ Appropriate error messages or status codes are transmitted between the microserv
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-### Additional Notes
+## Additional Notes
 - **Docker Username**: Replace `username` with your actual Docker Hub username or your private registry URL.
 - **Customization**: Adjust paths and namespaces according to your actual Kubernetes setup and directory structure.
 
