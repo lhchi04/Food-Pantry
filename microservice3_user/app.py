@@ -33,31 +33,6 @@ def login():
     return jsonify({'error': 'Invalid credentials'}), 401
 
 @app.route('/profile/<username>', methods=['GET', 'PUT'])
-# def profile(username):
-#     user = users.get(username)
-#     if not user:
-#         return jsonify({'error': 'User not found'}), 404
-#     if request.method == 'GET':
-#         user = users.get(username)
-#         if not user:
-#             return jsonify({'error': 'User not found'}), 404
-#         return jsonify({'username': username, 'profile': user})
-#     else:
-#         # data = request.get_json()
-#         # if 'password' in data:
-#         #     users[username]['password'] = generate_password_hash(data['password'])
-#         # return jsonify({'message': 'Profile updated successfully'}), 200
-
-#         data = request.get_json()
-#         current_password = data.get('current_password')
-#         new_password = data.get('new_password')
-
-#         user = users.get(username)
-#         if user and 'password' in data and check_password_hash(user['password'], current_password):
-#             users[username]['password'] = generate_password_hash(new_password)
-#             return jsonify({'message': 'Profile updated successfully'}), 200
-#         else:
-#             return jsonify({'error': 'Invalid current password'}), 401
 def profile(username):
     user = users.get(username)
     if not user:
@@ -76,6 +51,10 @@ def profile(username):
             return jsonify({'message': 'Profile updated successfully'}), 200
         else:
             return jsonify({'error': 'Invalid current password'}), 401
+        
+@app.route('/status')
+def status():
+    return jsonify({'status': 'OK'}), 200
 
 if __name__ == '__main__':
     app.run(debug=True, port=5002)

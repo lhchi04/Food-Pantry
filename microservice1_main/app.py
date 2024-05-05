@@ -96,6 +96,29 @@ def pantry():
             return render_template('pantry.html', items=items)
         else:
             return jsonify({'error': 'Failed to fetch pantry items'}), response.status_code
+        
+@app.route('/recipe', methods=['GET'])
+def recipe():
+    response = requests.get(f'{RECIPE_SERVICE_URL}/status')
+    return "Running", response.status_code
+
+@app.route('/health')
+def health_check():
+    # Add your custom health check logic here
+    if all_required_services_are_running():
+        return 'OK', 200
+    else:
+        return 'Service Unavailable', 500
+def all_required_services_are_running():
+    try:
+        # Attempt to reach the status endpoint of the user microservice
+        response = requests.get(f"{USER_SERVICE_URL}/status", timeout=5)
+        if response.status_code == 200:
+            return True
+        else:
+            return False
+    except requests.RequestException as e:
+        return jsonify({'status': 'ERROR', 'message': f'Failed to reach user service: {str(e)}'}), 503
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
