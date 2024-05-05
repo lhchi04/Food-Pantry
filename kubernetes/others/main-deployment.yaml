@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: main-container
-        image: lhchi04/main:0.1.0
+        image: lhchi04/main:0.1.1
         imagePullPolicy: Always
         resources:
           requests:
@@ -28,30 +28,9 @@ spec:
             cpu: "500m"
         ports:
         - containerPort: 5000
-        # envFrom:  # This will add all keys from the specified ConfigMap as environment variables
-        # - configMapRef:
-        #     name: main-config-map
-        env:
-          - name: DATA_MICROSERVICE
-            valueFrom:
-              configMapKeyRef:
-                name: main-config-map
-                key: DATA_MICROSERVICE
-          # - name: USER_SERVICE_URL
-          #   valueFrom:
-          #     configMapKeyRef:
-          #       name: main-config-map
-          #       key: USER_SERVICE_URL
-          # - name: PANTRY_SERVICE_URL
-          #   valueFrom:
-          #     configMapKeyRef:
-          #       name: main-config-map
-          #       key: PANTRY_SERVICE_URL
-          # - name: RECIPE_SERVICE_URL
-          #   valueFrom:
-          #     configMapKeyRef:
-          #       name: main-config-map
-          #       key: RECIPE_SERVICE_URL
+        envFrom:  # This will add all keys from the specified ConfigMap as environment variables
+        - configMapRef:
+            name: main-config-map
         readinessProbe:
           httpGet:
             path: /health

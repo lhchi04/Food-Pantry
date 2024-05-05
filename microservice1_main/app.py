@@ -4,9 +4,9 @@ from flask import Flask, request, jsonify, redirect, render_template, session, u
 from flask_restful import Api
 
 # Configuration
-# USER_SERVICE_URL = os.getenv('USER_SERVICE_URL', 'http://localhost:5002')
-# PANTRY_SERVICE_URL = os.getenv('PANTRY_SERVICE_URL', 'http://localhost:5003')
-# RECIPE_SERVICE_URL = os.getenv('RECIPE_SERVICE_URL', 'http://localhost:5004')
+USER_SERVICE_URL = os.getenv('USER_SERVICE_URL', 'http://localhost:5002')
+PANTRY_SERVICE_URL = os.getenv('PANTRY_SERVICE_URL', 'http://localhost:5003')
+RECIPE_SERVICE_URL = os.getenv('RECIPE_SERVICE_URL', 'http://localhost:5004')
 
 app = Flask(__name__, template_folder='templates')
 app.secret_key = 'super_secret_key'  # Should be set to a real secret key in production
@@ -22,7 +22,7 @@ def home():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        response = requests.post('http://user-svc.pan-user:5002/login', json=request.form.to_dict())
+        response = requests.post(f'{USER_SERVICE_URL}/login', json=request.form.to_dict())
         if response.status_code == 200:
             session['user_id'] = response.json()['user_id']
             return redirect(url_for('pantry'))
@@ -33,7 +33,7 @@ def login():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
-        response = requests.post('http://user-svc.pan-user:5002/signup', json=request.form.to_dict())
+        response = requests.post(f'{USER_SERVICE_URL}/signup', json=request.form.to_dict())
         if response.status_code == 201:
             session['user_id'] = response.json()['user_id']
             return redirect(url_for('pantry'))
@@ -46,7 +46,7 @@ def user_profile(username):
     if 'user_id' not in session or session['user_id'] != username:
         return redirect(url_for('login'))
     if request.method == 'GET':
-        response = requests.get(f'http://user-svc.pan-user:5002/profile/{username}')
+        response = requests.get(f'{USER_SERVICE_URL}/profile/{username}')
         if response.status_code == 200:
             profile_info = response.json()
             return render_template('profile.html', profile=profile_info)
@@ -60,7 +60,7 @@ def user_profile(username):
             return render_template('profile.html', error_message="Both current and new passwords are required")
 
         response = requests.put(
-            f'http://user-svc.pan-user:5002/profile/{username}',
+            f'{USER_SERVICE_URL}/profile/{username}',
             json={
                 'current_password': current_password,
                 'new_password': new_password
@@ -83,7 +83,7 @@ def pantry():
     if 'user_id' not in session:
         return redirect(url_for('login'))
     if request.method == 'GET':
-        response = requests.get('http://pantry-svc.pan-pantry:5003/pantry_items')
+        response = requests.get(f'{PANTRY_SERVICE_URL}/pantry_items')
         if response.status_code == 200:
             items = response.json()
             return render_template('pantry.html', items=items)
@@ -92,7 +92,7 @@ def pantry():
         
 @app.route('/recipe', methods=['GET'])
 def recipe():
-    response = requests.get('http://recipe-svc.pan-recipe:5004/status')
+    response = requests.get(f'{RECIPE_SERVICE_URL}/status')
     return "Running", response.status_code
 
 @app.route('/health')
