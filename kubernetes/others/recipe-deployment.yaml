@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: recipe-container
-        image: lhchi04/recipe:0.0.2
+        image: lhchi04/recipe:0.0.3
         imagePullPolicy: Always
         resources:
           requests:

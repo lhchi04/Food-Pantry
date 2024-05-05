@@ -5,3 +5,6 @@ metadata:
   namespace: pan-main
 data:
   DATA_MICROSERVICE: MyOtherMicroservice
+  USER_SERVICE_URL: "user-svc.pan-user:5002"
+  PANTRY_SERVICE_URL: "pantry-svc.pan-pantry:5003"
+  RECIPE_SERVICE_URL: "recipe-svc.pan-recipe:5004"
