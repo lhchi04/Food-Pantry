@@ -27,7 +27,7 @@ def login():
             session['user_id'] = response.json()['user_id']
             return redirect(url_for('pantry'))
         else:
-            return render_template('login.html', error='Login Failed')
+            return render_template('login.html', error='Incorrect username or password.')
     return render_template('login.html')
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -35,9 +35,6 @@ def signup():
     if request.method == 'POST':
         response = requests.post(f'{USER_SERVICE_URL}/signup', json=request.form.to_dict())
         if response.status_code == 201:  # Handling the 'Created' status
-            session['user_id'] = response.json().get('user_id', None)
-            return redirect(url_for('pantry'))
-        elif response.status_code == 200:
             session['user_id'] = response.json()['user_id']
             return redirect(url_for('pantry'))
         else:
@@ -85,5 +82,3 @@ def pantry():
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
-
-

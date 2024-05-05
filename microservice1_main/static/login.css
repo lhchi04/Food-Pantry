@@ -1,0 +1,107 @@
+@font-face {
+  font-family: Mops;
+  src: url(mops.ttf);
+}
+
+/* 5f0f40, 9a031e, fb8b24, e36414, 0f4c5c */
+body {
+  font-family: Mops;
+  color:#5f0f40;
+  background-color: #0f4c5c;
+  padding: 20px;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  width: 90%;
+  max-width: 500px; /* Ensures the form does not become too wide on larger screens */
+}
+
+.header {
+  text-align: center; /* Centers the logo and website name */
+  margin-bottom: 20px; /* Space between the header and the login title */
+}
+
+.logo {
+  width: 100px; /* Example size, adjust as needed */
+  height: auto;
+}
+
+h1 {
+  font-size: 40px; /* Size of the website name */
+  color: #ffffff; /* Maintains the white color scheme */
+}
+
+h2 {
+  font-size: 36px; /* Significantly larger font size for the "Login" header */
+  font-weight: bold; /* Bolder weight for added impact */
+  margin-bottom: 20px; /* More spacing to separate from form */
+  color: #fb8b24; /* Maintains the white color scheme */
+}
+
+form {
+  background: rgba(255, 255, 255, 0.8); /* Semi-transparent white to soften the intense background */
+  padding: 20px;
+  border-radius: 10px; /* Slightly larger radius for a softer look */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+input[type="text"], input[type="password"] {
+  width: calc(100% - 24px);
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 20px;
+  border: 2px solid #9a031e; /* Dark red for input borders */
+  border-radius: 6px; /* Rounded edges for inputs */
+  box-sizing: border-box;
+  font-size: 18px;
+  font-family: Mops;
+}
+
+button {
+  width: 60%;
+  font-family: Mops;
+  background-color: #5f0f406d; /* Darker shade initially */
+  color: white;
+  font-size: 18px;
+  padding: 12px;
+  border: none;
+  border-radius: 8px; /* Rounded button edges */
+  cursor: pointer;
+  transition: all 0.3s ease; /* Smooth transition for hover effects */
+  margin-left: 20%; /* Center the button */
+  margin-right: 20%;
+}
+
+button:hover {
+  background-color: #5f0f40; /* Rust orange when active */
+}
+
+button.active {
+  /* Only extends when active */
+  background-color: #5f0f40;
+}
+
+button.active:hover {
+  width: 100%; /* Extend width when active and hovered */
+  margin-left: 0; /* Remove margin to allow full width */
+  margin-right: 0;
+}
+
+.error {
+  color: #ff3860; /* Keeping the error vivid for visibility */
+  margin-bottom: 10px;
+}
+
+.signup-link {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.signup-link a {
+  color: #fb8b24; /* Vivid orange links to stand out */
+  font-weight: bold;
+}

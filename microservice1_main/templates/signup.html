@@ -4,58 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            padding: 20px;
-        }
-        form {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        input[type="text"], input[type="password"] {
-            width: calc(100% - 22px);
-            padding: 10px;
-            margin-top: 5px;
-            margin-bottom: 20px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        button {
-            width: 100%;
-            background-color: #5C67F2;
-            color: white;
-            padding: 10px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #5058E4;
-        }
-        .error {
-            color: red;
-            margin-bottom: 10px;
-        }
-    </style>
+    <link rel="stylesheet" href="./static/login.css">
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const username = document.getElementById('username');
+            const password = document.getElementById('password');
+            const loginButton = document.querySelector('button');
+
+            function updateButtonState() {
+                if (username.value && password.value) {
+                    loginButton.classList.add('active');
+                } else {
+                    loginButton.classList.remove('active');
+                }
+            }
+
+            username.addEventListener('input', updateButtonState);
+            password.addEventListener('input', updateButtonState);
+        });
+    </script>
 </head>
 <body>
-    <h2>Sign Up</h2>
-    {% if error %}
-    <div class="error">{{ error }}</div>
-    {% endif %}
-    <form action="{{ url_for('signup') }}" method="post">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
+    <div class="container">
+        <div class="header">
+            <img src="./static/logo.png" alt="Website Logo" class="logo">
+            <h1>Welcome to Food Pantry!</h1>
+        </div>
+        <h2>Sign Up</h2>
+        {% if error %}
+        <div class="error">{{ error }}</div>
+        {% endif %}
+        <form action="{{ url_for('signup') }}" method="post">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required minlength="6">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required minlength="6">
 
-        <button type="submit">Sign Up</button>
-    </form>
+            <button type="submit">Sign Up</button>
+        </form>
+    </div>
 </body>
 </html>

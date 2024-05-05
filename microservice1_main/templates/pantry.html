@@ -4,34 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pantry Items</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-        }
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        li {
-            margin-bottom: 10px;
-        }
-        button {
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        .profile-link {
-            display: inline-block;
-            margin-top: 20px;
-        }
-    </style>
+    <link rel="stylesheet" href="./static/pantry.css">
 </head>
 <body>
     <h1>Select Pantry Items</h1>
@@ -48,6 +21,8 @@
         </ul>
         <button type="submit">Check Cart</button>
     </form>
-    <a href="{{ url_for('user_profile', username=session['user_id']) }}" class="profile-link">View Profile</a>
+    <a href="{{ url_for('user_profile', username=session['user_id']) }}" class="profile-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+    </a>
 </body>
 </html>

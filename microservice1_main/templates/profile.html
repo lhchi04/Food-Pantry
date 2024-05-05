@@ -4,41 +4,130 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
+    <!-- <link rel="stylesheet" href="./static/profile.css"> -->
     <style>
+        @font-face {
+            font-family: Mops;
+            src: url(mops.ttf);
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: Mops;
+            color: #5f0f40; /* Deep plum for text */
+            background-color: #0f4c5c; /* Dark teal background */
             padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: start;
+            height: 100vh;
         }
-        form, .action-buttons {
-            margin-top: 20px;
+
+        h1 {
+            color: #ffffff; /* White color for headings */
+            font-size: 50px; /* Large font size for main heading */
+            margin-bottom: 30px;
         }
-        label, .action-buttons {
-            display: block;
+
+        form {
+            background: rgba(255, 255, 255, 0.8); /* Semi-transparent background for form */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 500px; /* Max width similar to the container on login page */
+            margin-bottom: 30px;
+        }
+
+        label {
             margin-bottom: 10px;
+            font-size: 18px;
         }
-        input[type="text"], input[type="password"], .action-buttons a {
-            padding: 8px;
-            width: 300px;
-            margin-bottom: 10px;
+
+        input[type="password"] {
+            padding: 10px;
+            width: calc(100% - 20px);
+            margin-bottom: 20px;
+            border: 2px solid #9a031e; /* Dark red border for inputs */
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 18px;
         }
+
         button, .action-buttons a {
-            padding: 10px 20px;
-            background-color: #4CAF50;
+            padding: 12px;
+            background-color: #5f0f40; /* Primary button color */
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
-            text-decoration: none; /* Remove underline from links styled as buttons */
+            text-decoration: none; /* Removing underline from links */
+            transition: background-color 0.3s ease; /* Smooth transition for hover effects */
+            display: block;
+            width: 100%; /* Full width for better accessibility */
+            text-align: center;
+            margin-bottom: 10px;
+            font-family: Mops;
         }
-        button:hover, .action-buttons a:hover {
-            background-color: #45a049;
+
+        .action-buttons a:hover {
+            background-color: #9a031e; /* Dark red on hover */
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        form button {
+            width: 60%;
+            background-color: #5f0f406d; /* Darker shade initially */
+            font-size: 18px;
+            padding: 12px;
+            border: none;
+            border-radius: 8px; /* Rounded button edges */
+            transition: all 0.3s ease; /* Smooth transition for hover effects */
+            margin-left: 20%; /* Center the button */
+            margin-right: 20%;
+        }
+        form button:hover {
+            background-color: #5f0f406d; /* Rust orange when active */
+        }
+
+        form button.active {
+            /* Only extends when active */
+            background-color: #5f0f40;
+        }
+
+        form button.active:hover {
+            width: 100%; /* Extend width when active and hovered */
+            margin-left: 0; /* Remove margin to allow full width */
+            margin-right: 0;
+        }
+
+        #backtopantry:hover {
+            background-color: #274317; /* Dark red on hover */
         }
     </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const password = document.getElementById('password');
+            const changeButton = document.querySelector('button[type="submit"]');
+
+            function updateButtonState() {
+                if (password.value) {
+                    changeButton.classList.add('active');
+                } else {
+                    changeButton.classList.remove('active');
+                }
+            }
+            password.addEventListener('input', updateButtonState);
+        });
+    </script>
 </head>
 <body>
-    <h1>User Profile</h1>
     <div>
-        <strong>Username:</strong> {{ profile['username'] }}
+        <h1><strong>Hi</strong> {{ profile['username'] }}<strong>!</strong></h1>
     </div>
 
     <!-- Form to update password -->
@@ -51,7 +140,7 @@
 
     <!-- Navigation Buttons -->
     <div class="action-buttons">
-        <a href="{{ url_for('pantry') }}">Back to Pantry</a>
+        <a id="backtopantry" href="{{ url_for('pantry') }}">Back to Pantry</a>
         <a href="{{ url_for('logout') }}">Log Out</a>
     </div>
 </body>

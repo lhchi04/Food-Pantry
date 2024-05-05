@@ -1,0 +1,76 @@
+@font-face {
+  font-family: Mops;
+  src: url(mops.ttf);
+}
+
+body {
+  font-family: Mops;
+  background-color: #0f4c5c; /* Dark teal background */
+  color: #5f0f40; /* Deep plum for text */
+  padding: 20px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+}
+
+h1 {
+  font-size: 40px;
+  color: #ffffff; /* White for headings */
+  margin-bottom: 20px;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  width: 90%;
+  max-width: 500px;
+  background: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+li {
+  border-bottom: 1px solid #9a031e; /* Dark red border */
+  padding: 10px;
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+button {
+  width: 60%;
+  font-family: Mops;
+  background-color: #9a031f94; /* Semi-transparent initially */
+  color: white;
+  font-size: 18px;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-left: 20%;
+  margin-right: 20%;
+}
+
+button:hover {
+  background-color: #9a031e; /* Brighter on hover */
+}
+
+.profile-link {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: #9a031e; /* Vivid orange */
+  color:#eeaf74;
+  padding: 10px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease; /* Added transition for smooth effect */
+}
+
+.profile-link:hover {
+  background-color: #5f0f40; /* Rust orange on hover */
+}
