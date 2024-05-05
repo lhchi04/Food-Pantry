@@ -12,10 +12,12 @@
             const loginButton = document.querySelector('button');
 
             function updateButtonState() {
-                if (username.value && password.value) {
-                    loginButton.classList.add('active');
+                if (username.value && password.value.length >= 6) {
+                loginButton.classList.add('active');
+                loginButton.disabled = false; // Enable the button
                 } else {
                     loginButton.classList.remove('active');
+                    loginButton.disabled = true; // Disable the button if conditions are not met
                 }
             }
 
@@ -39,7 +41,7 @@
             <input type="text" id="username" name="username" required>
 
             <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required minlength="6">
+            <input type="password" id="password" name="password">
 
             <button type="submit">Login</button>
         </form>

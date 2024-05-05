@@ -1,6 +1,6 @@
 import os
 import requests
-from flask import Flask, request, jsonify, redirect, render_template, session, url_for
+from flask import Flask, request, jsonify, redirect, render_template, session, url_for, flash
 from flask_restful import Api
 
 # Configuration
@@ -56,12 +56,29 @@ def user_profile(username):
 def update_profile(username):
     if 'user_id' not in session or session['user_id'] != username:
         return redirect(url_for('login'))
-    new_password = request.form.get('password')
-    response = requests.put(f'{USER_SERVICE_URL}/profile/{username}', json={'password': new_password})
+    # new_password = request.form.get('password')
+    # response = requests.put(f'{USER_SERVICE_URL}/profile/{username}', json={'password': new_password})
+    current_password = request.form.get('current_password')
+    new_password = request.form.get('new_password')
+
+    if not current_password or not new_password:
+        return render_template('profile.html', error_message="Both current and new passwords are required")
+
+    response = requests.put(
+        f'{USER_SERVICE_URL}/profile/{username}',
+        json={
+            'current_password': current_password,
+            'new_password': new_password
+        }
+    )
+    # profile_response = requests.get(f'{USER_SERVICE_URL}/profile/{username}')
+    # profile = profile_response.json() if profile_response.status_code == 200 else None
     if response.status_code == 200:
+        flash('Your password has been updated successfully!', 'success')
         return redirect(url_for('user_profile', username=username))
     else:
-        return "Error updating profile", response.status_code
+        flash('Failed to update password. Please check your current password and try again.', 'error')
+        return redirect(url_for('user_profile', username=username))
 
 @app.route('/logout')
 def logout():

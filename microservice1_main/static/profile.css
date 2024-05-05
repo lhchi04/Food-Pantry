@@ -5,8 +5,8 @@
 
 body {
   font-family: Mops;
-  color: #5f0f40;
-  background-color: #0f4c5c;
+  color: #5f0f40; /* Deep plum for text */
+  background-color: #0f4c5c; /* Dark teal background */
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -16,18 +16,18 @@ body {
 }
 
 h1 {
-  color: #ffffff;
-  font-size: 50px;
+  color: #ffffff; /* White color for headings */
+  font-size: 50px; /* Large font size for main heading */
   margin-bottom: 30px;
 }
 
 form {
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.8); /* Semi-transparent background for form */
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 90%;
-  max-width: 500px;
+  max-width: 500px; /* Max width similar to the container on login page */
   margin-bottom: 30px;
 }
 
@@ -40,7 +40,7 @@ input[type="password"] {
   padding: 10px;
   width: calc(100% - 20px);
   margin-bottom: 20px;
-  border: 2px solid #9a031e;
+  border: 2px solid #9a031e; /* Dark red border for inputs */
   border-radius: 6px;
   box-sizing: border-box;
   font-size: 18px;
@@ -48,11 +48,11 @@ input[type="password"] {
 
 button, .action-buttons a {
   padding: 12px;
-  background-color: #5f0f40;
+  background-color: #5f0f40; /* Primary button color */
   color: white;
-  border: none;
   border-radius: 8px;
   cursor: pointer;
+  border: none;
   text-decoration: none; /* Removing underline from links */
   transition: background-color 0.3s ease; /* Smooth transition for hover effects */
   display: block;
@@ -70,34 +70,43 @@ button, .action-buttons a {
   display: flex;
   flex-direction: column;
   align-items: center;
-
 }
-form button {
+#update_button {
   width: 60%;
   background-color: #5f0f406d; /* Darker shade initially */
   font-size: 18px;
   padding: 12px;
-  border: none;
   border-radius: 8px; /* Rounded button edges */
-  transition: all 0.3s ease; /* Smooth transition for hover effects */
   margin-left: 20%; /* Center the button */
   margin-right: 20%;
+  transition: 450ms;
 }
-form button:hover {
-  background-color: #5f0f406d; /* Rust orange when active */
+#update_button:hover {
+  background-color: #5f0f406d;
+  transition: 150ms ease-in-out;
 }
 
-form button.active {
+#update_button.active {
   /* Only extends when active */
   background-color: #5f0f40;
 }
 
-form button.active:hover {
-  width: 100%; /* Extend width when active and hovered */
-  margin-left: 0; /* Remove margin to allow full width */
-  margin-right: 0;
+#update_button.active:hover {
+  width: 90%; /* Extend width when active and hovered */
+  margin-left: 5%; /* Remove margin to allow full width */
+  margin-right: 5%;
+  border-radius: 10px;
+  color: #5f0f40;
+  background-color: #0f4d5c54;
 }
 
 #backtopantry:hover {
   background-color: #274317; /* Dark red on hover */
+}
+
+.success {
+  color: green;
+}
+.error {
+  color: red;
 }

@@ -58,9 +58,9 @@
             padding: 12px;
             background-color: #5f0f40; /* Primary button color */
             color: white;
-            border: none;
             border-radius: 8px;
             cursor: pointer;
+            border: none;
             text-decoration: none; /* Removing underline from links */
             transition: background-color 0.3s ease; /* Smooth transition for hover effects */
             display: block;
@@ -79,49 +79,66 @@
             flex-direction: column;
             align-items: center;
         }
-        form button {
+        #update_button {
             width: 60%;
             background-color: #5f0f406d; /* Darker shade initially */
             font-size: 18px;
             padding: 12px;
-            border: none;
             border-radius: 8px; /* Rounded button edges */
-            transition: all 0.3s ease; /* Smooth transition for hover effects */
             margin-left: 20%; /* Center the button */
             margin-right: 20%;
+            transition: 450ms;
         }
-        form button:hover {
-            background-color: #5f0f406d; /* Rust orange when active */
+        #update_button:hover {
+            background-color: #5f0f406d;
+            transition: 150ms ease-in-out;
         }
 
-        form button.active {
+        #update_button.active {
             /* Only extends when active */
             background-color: #5f0f40;
         }
 
-        form button.active:hover {
-            width: 100%; /* Extend width when active and hovered */
-            margin-left: 0; /* Remove margin to allow full width */
-            margin-right: 0;
+        #update_button.active:hover {
+            width: 90%; /* Extend width when active and hovered */
+            margin-left: 5%; /* Remove margin to allow full width */
+            margin-right: 5%;
+            border-radius: 10px;
+            color: #5f0f40;
+            background-color: #0f4d5c54;
         }
 
         #backtopantry:hover {
             background-color: #274317; /* Dark red on hover */
         }
+
+        .success {
+            color: green;
+        }
+        .error {
+            color: red;
+        }
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const password = document.getElementById('password');
+            const currentPassword = document.getElementById('current_password');
+            const newPassword = document.getElementById('new_password');
             const changeButton = document.querySelector('button[type="submit"]');
 
             function updateButtonState() {
-                if (password.value) {
+                // Check that both passwords are filled and have at least 6 characters
+                if (currentPassword.value.length >= 6 && newPassword.value.length >= 6) {
+                    changeButton.disabled = false;  // Enable the button
                     changeButton.classList.add('active');
                 } else {
+                    changeButton.disabled = true;  // Disable the button
                     changeButton.classList.remove('active');
                 }
             }
-            password.addEventListener('input', updateButtonState);
+
+            // Listen for input on both password fields
+            currentPassword.addEventListener('input', updateButtonState);
+            newPassword.addEventListener('input', updateButtonState);
         });
     </script>
 </head>
@@ -129,15 +146,25 @@
     <div>
         <h1><strong>Hi</strong> {{ profile['username'] }}<strong>!</strong></h1>
     </div>
-
     <!-- Form to update password -->
     <form action="{{ url_for('update_profile', username=profile['username']) }}" method="post">
-        <h2>Update Password</h2>
-        <label for="password">New Password:</label>
-        <input type="password" id="password" name="password" required>
-        <button type="submit">Update Password</button>
-    </form>
+        <label for="current_password">Current Password:</label>
+        <input type="password" id="current_password" name="current_password" required>
+    
+        <label for="new_password">New Password:</label>
+        <input type="password" id="new_password" name="new_password" required>
+    
+        <button type="submit" id="update_button">Update Password</button>
 
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </form>
+    
     <!-- Navigation Buttons -->
     <div class="action-buttons">
         <a id="backtopantry" href="{{ url_for('pantry') }}">Back to Pantry</a>

@@ -76,10 +76,6 @@ button {
   margin-right: 20%;
 }
 
-button:hover {
-  background-color: #5f0f40; /* Rust orange when active */
-}
-
 button.active {
   /* Only extends when active */
   background-color: #5f0f40;
