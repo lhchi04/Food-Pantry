@@ -55,7 +55,7 @@ To build and run the application locally, follow these steps:
 
 ## Component Diagram
 
-![Architecture](.uml-diagram.png)
+![Architecture](./uml-diagram.png)
 
 ## Screenshots/GIFs
 
