@@ -1,0 +1,91 @@
+@font-face {
+  font-family: Mops;
+  src: url(mops.ttf);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Mops;
+}
+
+.recipes-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 0.5fr));
+  gap: 40px;
+  justify-content: center;
+  padding: 30px;
+}
+
+body {
+  font-family: Mops;
+  color: #5f0f40; /* Deep plum for text */
+  background-color: #0f4c5c; /* Dark teal background */
+  padding: 20px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 40px;
+  color: #ffffff; /* White color for headings */
+  margin-bottom: 40px;
+}
+
+h2 {
+  margin-bottom: 20px;
+}
+
+.recipe {
+  background: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+  padding: 20px;
+  padding-bottom: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+  
+}
+
+.recipe img {
+  width: 100%; /* Full width of the card */
+  height: auto; /* Maintain aspect ratio */
+  border-radius: 6px;
+}
+
+.action-buttons a {
+  padding: 12px;
+  background-color: #5f0f40; /* Primary button color */
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 10px;
+  font-family: Mops;
+}
+
+.action-buttons a:hover {
+  background-color: #9a031e;
+}
+
+.profile-link {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: #9a031e; /* Vivid orange */
+  color:rgba(255, 255, 255, 0.8);
+  padding: 10px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease; /* Added transition for smooth effect */
+}
+
+.profile-link:hover {
+  background-color: #ffffff5f;
+  color:rgb(255, 255, 255);
+}

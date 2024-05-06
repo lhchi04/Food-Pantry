@@ -15,7 +15,7 @@
     </ul>
 
     <!-- Form to submit cart items to Recipe Microservice -->
-    <form action="{{ url_for('recipe') }}" method="post">
+    <form action="{{ url_for('get_recipes') }}" method="post">
         <!-- Create a hidden input for each item in the cart -->
         {% for name, quantity in cart.items() %}
         <input type="hidden" name="items" value="{{ name }}" data-quantity="{{ quantity }}">

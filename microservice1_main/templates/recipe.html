@@ -4,23 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recipes from Your Cart</title>
-    <style>
-        .recipe {
-            margin-bottom: 20px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .recipe img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 4px;
-        }
-    </style>
+    <link rel="stylesheet" href="./static/recipe.css">
 </head>
 <body>
     <h1>Recipes Based on Your Cart</h1>
-    <div>
+    <div class="recipes-container">
         {% for recipe in recipes %}
         <div class="recipe">
             <h2>{{ recipe.title }}</h2>
@@ -28,6 +16,13 @@
             <p>Likes: {{ recipe.likes }}</p>
         </div>
         {% endfor %}
+    </div>
+    <a href="{{ url_for('user_profile', username=session['user_id']) }}" class="profile-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+    </a>
+    <!-- Navigation Buttons -->
+    <div class="action-buttons">
+        <a id="backtopantry" href="{{ url_for('pantry') }}">Back to Pantry</a>
     </div>
 </body>
 </html>
