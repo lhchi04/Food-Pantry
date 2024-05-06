@@ -55,7 +55,7 @@ To build and run the application locally, follow these steps:
 
 ## Component Diagram
 
-![Architecture](./uml-diagram.jpeg)
+![Architecture](./microservice1_main\static\uml-diagram.png)
 
 ## Screenshots/GIFs
 
