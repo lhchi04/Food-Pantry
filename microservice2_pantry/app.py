@@ -13,10 +13,18 @@ class PantryItem(db.Model):
     Name = db.Column(db.String(50), nullable=False)
     Quantity = db.Column(db.Integer, nullable=False)
 
+    def to_dict(self):
+        return {
+            'ID': self.ID,
+            'Name': self.Name,
+            'Quantity': self.Quantity
+        }
+
 @app.route('/pantry_items')
 def home():
     items = PantryItem.query.all()  # Retrieve all items from the PantryItems table
-    return render_template('pantry.html', items=items)
+    items_data = [item.to_dict() for item in items]  # Convert each item to a dictionary
+    return jsonify(items_data)
 
 # Initialize a global dictionary to store cart contents
 global_cart_contents = {}
@@ -37,13 +45,15 @@ def add_items_to_cart():
 
 @app.route('/view_cart')
 def view_cart():
+    # items = PantryItem.query.filter(PantryItem.ID.in_(global_cart_contents.keys())).all()
+    # cart_items = {item.Name: global_cart_contents[item.ID] for item in items if item}
     cart_items = {PantryItem.query.get(item_id).Name: qty for item_id, qty in global_cart_contents.items() if PantryItem.query.get(item_id)}
-    return render_template('cart.html', cart=cart_items)
+    return jsonify(cart_items)
 
-@app.route('/api/cart_contents')
-def api_cart_contents():
-    cart_contents = {PantryItem.query.get(item_id).Name: qty for item_id, qty in global_cart_contents.items() if PantryItem.query.get(item_id)}
-    return jsonify(cart_contents)
+# @app.route('/api/cart_contents')
+# def api_cart_contents():
+#     cart_contents = {PantryItem.query.get(item_id).Name: qty for item_id, qty in global_cart_contents.items() if PantryItem.query.get(item_id)}
+#     return jsonify(cart_contents)
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5002)
+    app.run(debug=True, port=5003)

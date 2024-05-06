@@ -8,13 +8,13 @@
 </head>
 <body>
     <h1>Select Pantry Items</h1>
-    <form action="{{ url_for('pantry') }}" method="post">
+    <form action="{{ url_for('add_items_to_cart') }}" method="post">
         <ul>
-            {% for id, item in items.items() %}
+            {% for item in items %}
             <li>
                 <label>
-                    <input type="checkbox" name="items" value="{{ id }}">
-                    {{ item.name }} - Available: {{ item.quantity }}
+                    <input type="checkbox" name="items" value="{{ item['ID'] }}">
+                    {{ item['Name'] }} - Available: {{ item['Quantity'] }}
                 </label>
             </li>
             {% endfor %}

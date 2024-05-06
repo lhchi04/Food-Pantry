@@ -90,7 +90,31 @@ def pantry():
         else:
             return jsonify({'error': 'Failed to fetch pantry items'}), response.status_code
         
-@app.route('/recipe', methods=['GET'])
+@app.route('/add_items_to_cart', methods=['POST'])
+def add_items_to_cart():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    
+    # Collect item IDs from the form
+    selected_items = request.form.getlist('items')
+    # Forward these items to the pantry service's add_items_to_cart endpoint
+    response = requests.post(f'{PANTRY_SERVICE_URL}/add_items_to_cart', data={'items': selected_items})
+    # Handle responses accordingly
+    if response.status_code == 200:
+        return redirect(url_for('cart'))  # Redirect to the cart page to view added items
+    else:
+        return "Failed to add items to cart", response.status_code
+                
+@app.route('/cart', methods=['GET'])
+def cart():
+    response = requests.get(f'{PANTRY_SERVICE_URL}/view_cart')
+    if response.status_code == 200:
+        cart_items = response.json()
+        return render_template('cart.html', cart=cart_items)  # Pass data to the template
+    else:
+        return "Error loading cart", response.status_code
+
+@app.route('/recipe', methods=['GET', 'POST'])
 def recipe():
     response = requests.get(f'{RECIPE_SERVICE_URL}/status')
     return "Running", response.status_code
