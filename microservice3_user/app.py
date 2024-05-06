@@ -5,7 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = 'your_secret_key'  # Set a secret key for session management
+app.config['SECRET_KEY'] = 'super_secret_key'  # Set a secret key for session management
 
 db = SQLAlchemy(app)
 
@@ -14,6 +14,15 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
+
+    def to_dict(self):
+        """
+        Return a dictionary containing the user data.
+        """
+        return {
+            'id': self.id,
+            'username': self.username,
+        }
 
 @app.route('/signup', methods=['POST'])
 def signup():
@@ -39,16 +48,19 @@ def login():
 
     user = User.query.filter_by(username=username).first()
     if user and check_password_hash(user.password_hash, password):
-        session['username'] = username
-        return jsonify({'message': 'Login successful', 'user_id': user.id}), 200
-
+        session['user_id'] = user.id
+        session['username'] = user.username
+        print("Session Username:", session.get('username'))
+        print("Session User ID:", session.get('user_id'))
+        return jsonify({'message': 'Login successful', 'user_id': user.id, 'username': user.username}), 200
+    
     return jsonify({'error': 'Invalid credentials'}), 401
 
-@app.route('/profile/<username>', methods=['GET', 'PUT'])
+@app.route('/profile/<username>', methods=['GET', 'POST'])
 def profile(username):
-    if 'username' not in session or session['username'] != username:
-        return jsonify({'error': 'Unauthorized access'}), 401
-
+    # if 'username' not in session:
+    #     return jsonify({'error': 'Unauthorized access'}), 401
+    
     user = User.query.filter_by(username=username).first()
     if not user:
         return jsonify({'error': 'User not found'}), 404
@@ -56,16 +68,22 @@ def profile(username):
     if request.method == 'GET':
         return jsonify({'username': user.username})
 
-    elif request.method == 'PUT':
+    elif request.method == 'POST':
         data = request.get_json()
+        current_password = data.get('current_password')
         new_password = data.get('new_password')
 
-        if new_password:
+        # Check for the presence of required data
+        if not current_password or not new_password:
+            return jsonify({'error': 'Current and new password must be provided'}), 400
+
+        # Verify the current password before updating
+        if check_password_hash(user.password_hash, current_password):
             user.password_hash = generate_password_hash(new_password)
             db.session.commit()
             return jsonify({'message': 'Profile updated successfully'}), 200
         else:
-            return jsonify({'error': 'New password not provided'}), 400
+            return jsonify({'error': 'Invalid current password'}), 401
 
 @app.route('/logout')
 def logout():

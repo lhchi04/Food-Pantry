@@ -1,6 +1,6 @@
 import os
 import requests
-from flask import Flask, request, jsonify, redirect, render_template, session, url_for, flash
+from flask import Flask, request, jsonify, redirect, render_template, session, url_for, flash, request
 from flask_restful import Api
 
 # Configuration
@@ -8,7 +8,7 @@ USER_SERVICE_URL = os.getenv('USER_SERVICE_URL', 'http://localhost:5002')
 PANTRY_SERVICE_URL = os.getenv('PANTRY_SERVICE_URL', 'http://localhost:5003')
 RECIPE_SERVICE_URL = os.getenv('RECIPE_SERVICE_URL', 'http://localhost:5004')
 
-app = Flask(__name__, template_folder='templates')
+app = Flask(__name__, template_folder='templates', static_folder = 'static')
 app.secret_key = 'super_secret_key'  # Should be set to a real secret key in production
 api = Api(app)
 
@@ -24,7 +24,9 @@ def login():
     if request.method == 'POST':
         response = requests.post(f'{USER_SERVICE_URL}/login', json=request.form.to_dict())
         if response.status_code == 200:
-            session['user_id'] = response.json()['user_id']
+            response_data = response.json()
+            session['user_id'] = response_data.get('user_id')
+            session['username'] = response_data.get('username')
             return redirect(url_for('pantry'))
         else:
             return render_template('login.html', error='Incorrect username or password.')
@@ -43,7 +45,7 @@ def signup():
 
 @app.route('/user_profile/<username>', methods=['GET', 'POST'])
 def user_profile(username):
-    if 'user_id' not in session or session['user_id'] != username:
+    if 'user_id' not in session:
         return redirect(url_for('login'))
     if request.method == 'GET':
         response = requests.get(f'{USER_SERVICE_URL}/profile/{username}')
@@ -59,7 +61,7 @@ def user_profile(username):
         if not current_password or not new_password:
             return render_template('profile.html', error_message="Both current and new passwords are required")
 
-        response = requests.put(
+        response = requests.post(
             f'{USER_SERVICE_URL}/profile/{username}',
             json={
                 'current_password': current_password,
