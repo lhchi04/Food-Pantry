@@ -1,31 +1,49 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import Flask, redirect, render_template, request, jsonify, url_for
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///pantry.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-pantry_items = {
-    1: {'name': 'Pasta', 'quantity': 50},
-    2: {'name': 'Tomato Sauce', 'quantity': 30},
-    3: {'name': 'Beans', 'quantity': 20},
-    4: {'name': 'Rice', 'quantity': 40},
-    5: {'name': 'Tuna', 'quantity': 25}
-}
+db = SQLAlchemy(app)
 
-@app.route('/pantry_items', methods=['GET'])
-def get_pantry_items():
-    return jsonify(pantry_items)
+class PantryItem(db.Model):
+    __tablename__ = 'PantryItems'  # Ensure this exactly matches the table name in the database
+    ID = db.Column(db.Integer, primary_key=True)  # Capital 'ID' to match your schema description
+    Name = db.Column(db.String(50), nullable=False)
+    Quantity = db.Column(db.Integer, nullable=False)
+
+@app.route('/pantry_items')
+def home():
+    items = PantryItem.query.all()  # Retrieve all items from the PantryItems table
+    return render_template('pantry.html', items=items)
+
+# Initialize a global dictionary to store cart contents
+global_cart_contents = {}
 
 @app.route('/add_items_to_cart', methods=['POST'])
 def add_items_to_cart():
-    selected_items = request.json.get('items', [])
-    cart_items = {}
+    selected_items = request.form.getlist('items')
+    for item_id_str in selected_items:
+        item_id = int(item_id_str)
+        item = PantryItem.query.get(item_id)
+        if item and item.Quantity > 0:  # Check if item exists and is in stock
+            if item_id not in global_cart_contents:
+                global_cart_contents[item_id] = 0
+            global_cart_contents[item_id] += 1
+            item.Quantity -= 1  # Decrement stock
+            db.session.commit()  # Save changes to the database
+    return redirect(url_for('view_cart'))
 
-    for item_id in selected_items:
-        item_id = int(item_id)
-        if item_id in pantry_items and pantry_items[item_id]['quantity'] > 0:
-            cart_items[item_id] = pantry_items[item_id]
-            pantry_items[item_id]['quantity'] -= 1  # Reduce inventory
+@app.route('/view_cart')
+def view_cart():
+    cart_items = {PantryItem.query.get(item_id).Name: qty for item_id, qty in global_cart_contents.items() if PantryItem.query.get(item_id)}
+    return render_template('cart.html', cart=cart_items)
 
-    return jsonify(cart_items)
+@app.route('/api/cart_contents')
+def api_cart_contents():
+    cart_contents = {PantryItem.query.get(item_id).Name: qty for item_id, qty in global_cart_contents.items() if PantryItem.query.get(item_id)}
+    return jsonify(cart_contents)
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5003)
+    app.run(debug=True, port=5002)
