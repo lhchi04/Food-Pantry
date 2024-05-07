@@ -116,23 +116,20 @@ def cart():
         return render_template('cart.html', cart=cart_items)  # Pass data to the template
     else:
         return "Error loading cart", response.status_code
+    
+@app.route('/delete_from_cart/<item_name>', methods=['POST'])
+def delete_from_cart(item_name):
+    data = request.get_json()
+    quantity = data.get('quantity')
+    if quantity is None:
+        flash('Quantity not provided.', 'error')
+        return redirect(url_for('cart'))
+    response = requests.post(f'{PANTRY_SERVICE_URL}/delete_from_cart', json={
+        'item_name': item_name,
+        'quantity': quantity
+    })
+    return redirect(url_for('cart'))
 
-# @app.route('/get_recipes', methods=['GET'])
-# def get_recipes():
-#     pantry_response = requests.get(f'{PANTRY_SERVICE_URL}/view_cart')
-#     if pantry_response.status_code != 200:
-#         return jsonify({'error': 'Failed to fetch cart contents'}), pantry_response.status_code
-
-#     cart_items = pantry_response.json()
-#     ingredients = ','.join([item['name'] for item in cart_items])  # Adjust based on actual JSON structure
-
-#     # Call the recipe service
-#     recipe_response = requests.get(f'{RECIPE_SERVICE_URL}/recipe', params={'ingredients': ingredients})
-#     if recipe_response.status_code != 200:
-#         return jsonify({'error': 'Failed to retrieve recipes'}), recipe_response.status_code
-
-#     recipes = recipe_response.json()
-#     return render_template('recipe.html', recipes=recipes)
 @app.route('/get_recipes', methods=['POST'])
 def get_recipes():
     if 'user_id' not in session:
@@ -150,18 +147,6 @@ def get_recipes():
             return jsonify({'error': 'Failed to fetch recipes'}), response.status_code
     except requests.RequestException as e:
         return jsonify({'error': str(e)}), 500
-
-# @app.route('/recipe', methods=['GET', 'POST'])
-# def recipe():
-#     if request.method == 'GET':
-#         response = requests.get(f'{RECIPE_SERVICE_URL}/recipe')
-#         if response.status_code != 200:
-#             return f"Error: Failed to fetch recipes ({response.status_code})"
-#         recipes = response.json()
-#         return render_template('recipe.html', recipes=recipes)
-#     else:
-#         selected_items = request.form.getlist('items')
-#         response = requests.post(f'{RECIPE_SERVICE_URL}/recipe', data=)
 
 @app.route('/health')
 def health_check():
