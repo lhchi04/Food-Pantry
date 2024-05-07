@@ -1,29 +1,29 @@
-from flask import Flask, redirect, render_template, request, jsonify, url_for
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, redirect, request, jsonify, url_for
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///pantry.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-db = SQLAlchemy(app)
-
-class PantryItem(db.Model):
-    __tablename__ = 'PantryItems'  # Ensure this exactly matches the table name in the database
-    ID = db.Column(db.Integer, primary_key=True)  # Capital 'ID' to match your schema description
-    Name = db.Column(db.String(50), nullable=False)
-    Quantity = db.Column(db.Integer, nullable=False)
-
-    def to_dict(self):
-        return {
-            'ID': self.ID,
-            'Name': self.Name,
-            'Quantity': self.Quantity
-        }
+pantry_items = [
+    {'ID': 1, 'Name': 'Pasta', 'Quantity': 2},
+    {'ID': 2, 'Name': 'Rice', 'Quantity': 50},
+    {'ID': 3, 'Name': 'Tomato', 'Quantity': 50},
+    {'ID': 4, 'Name': 'Ham', 'Quantity': 50},
+    {'ID': 5, 'Name': 'Butter', 'Quantity': 50},
+    {'ID': 6, 'Name': 'Apple', 'Quantity': 50},
+    {'ID': 7, 'Name': 'Banana', 'Quantity': 1},
+    {'ID': 8, 'Name': 'Spam', 'Quantity': 50},
+    {'ID': 9, 'Name': 'Egg', 'Quantity': 50},
+    {'ID': 10, 'Name': 'Corn', 'Quantity': 50},
+    {'ID': 11, 'Name': 'Milk', 'Quantity': 50},
+    {'ID': 12, 'Name': 'Coffee', 'Quantity': 50},
+    {'ID': 13, 'Name': 'Noodles', 'Quantity': 50},
+    {'ID': 14, 'Name': 'Sausage', 'Quantity': 50},
+    {'ID': 15, 'Name': 'Chocolate', 'Quantity': 50},
+]
 
 @app.route('/pantry_items')
 def home():
-    items = PantryItem.query.filter(PantryItem.Quantity > 0).all()  # Retrieve all items from the PantryItems table
-    items_data = [item.to_dict() for item in items]  # Convert each item to a dictionary
+    # Filtering items to only include those with quantity > 0
+    items_data = [item for item in pantry_items if item['Quantity'] > 0]
     return jsonify(items_data)
 
 # Initialize a global dictionary to store cart contents
@@ -34,20 +34,21 @@ def add_items_to_cart():
     selected_items = request.form.getlist('items')
     for item_id_str in selected_items:
         item_id = int(item_id_str)
-        item = PantryItem.query.get(item_id)
-        if item and item.Quantity > 0:  # Check if item exists and is in stock
+        item = next((item for item in pantry_items if item['ID'] == item_id), None)
+        if item and item['Quantity'] > 0:  # Check if item exists and is in stock
             if item_id not in global_cart_contents:
                 global_cart_contents[item_id] = 0
             global_cart_contents[item_id] += 1
-            item.Quantity -= 1  # Decrement stock
-            db.session.commit()  # Save changes to the database
+            item['Quantity'] -= 1  # Decrement stock
     return redirect(url_for('view_cart'))
 
 @app.route('/view_cart')
 def view_cart():
-    # items = PantryItem.query.filter(PantryItem.ID.in_(global_cart_contents.keys())).all()
-    # cart_items = {item.Name: global_cart_contents[item.ID] for item in items if item}
-    cart_items = {PantryItem.query.get(item_id).Name: qty for item_id, qty in global_cart_contents.items() if PantryItem.query.get(item_id)}
+    cart_items = {}
+    for item_id, qty in global_cart_contents.items():
+        item = next((item for item in pantry_items if item['ID'] == item_id), None)
+        if item:
+            cart_items[item['Name']] = qty
     return jsonify(cart_items)
 
 @app.route('/delete_from_cart', methods=['POST'])
@@ -56,17 +57,16 @@ def delete_from_cart():
     item_name = data['item_name']
     quantity = int(data['quantity'])  # Quantity to be added back to the stock
 
-    # Query the database for the PantryItem
-    item = PantryItem.query.filter_by(Name=item_name).first()
-    
+    item = next((item for item in pantry_items if item['Name'] == item_name), None)
     if item is None:
         return jsonify({'error': f'Item "{item_name}" not found in the pantry.'}), 404
-    # Add back the quantity to the item in the database
-    item.Quantity += quantity
-    db.session.commit()
 
-    # Remove the item from the global cart
-    global_cart_contents.pop(item.ID)
+    item['Quantity'] += quantity
+    if item['ID'] in global_cart_contents:
+        if global_cart_contents[item['ID']] > quantity:
+            global_cart_contents[item['ID']] -= quantity
+        else:
+            global_cart_contents.pop(item['ID'])
     return redirect(url_for('view_cart'))
 
 if __name__ == '__main__':
