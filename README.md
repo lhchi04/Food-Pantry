@@ -2,7 +2,7 @@
 # Food Pantry
 
 ## Application and purpose
-Food Pantry is a comprehensive web application designed to simplify the process of discovering and generating recipes based on selected ingredients. Our purpose is to offer users a seamless experience in finding and creating delicious meals using our ingredients.
+Food Pantry is a comprehensive web application designed to simplify the process of discovering and generating recipes based on selected ingredients available at Trinity College Food-n-Stuff Pantry. Our purpose is to offer users a seamless experience in finding and creating delicious meals using our ingredients.
 
 ## Members
 1. Chi Le
@@ -10,7 +10,7 @@ Food Pantry is a comprehensive web application designed to simplify the process 
 3. Shazif Ahmed
 
 ## Description
-The Food Pantry is a web application that allows users to browse and add second-hand items to cart. The application consists of 4 main services:
+The Food Pantry is a web application that allows users to browse and add food items to cart. The application consists of 4 main services:
 1. **Main Page**: Serves as the central hub, facilitating communication between other services and managing the overall workflow.
 1. **User Service**: Handles user registration, login, and profile management.
 2. **Pantry Service**: Displays a pantry of available ingredients for users to select from.
@@ -55,13 +55,15 @@ To build and run the application locally, follow these steps:
 
 ## Component Diagram
 
-![Architecture](./uml-diagram.jpeg)
+![Architecture](./uml-diagram.png)
 
 ## Screenshots/GIFs
 
 ## Dependencies
 - Flask-RESTful: An extension for Flask that adds support for quickly building REST APIs.
 - spoonacular API: An API for recipe generation and food data.
+- SQLite: A C library that provides a lightweight disk-based database and allows accessing the database using a nonstandard variant of the SQL query language.
+- SQLAlchemy: A SQL toolkit and Object-Relational Mapping (ORM) system for Python.
 - Kubernetes: An open-source container orchestration platform for automating deployment, scaling, and management of containerized applications.
 - Docker: A platform for developing, shipping, and running applications in containers.
 
