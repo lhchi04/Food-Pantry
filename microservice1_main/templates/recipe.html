@@ -5,6 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recipes from Your Cart</title>
     <link rel="stylesheet" href="./static/recipe.css">
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Event listener for opening modals
+            document.querySelectorAll('.myBtn').forEach(button => {
+                button.onclick = function() {
+                    var index = this.getAttribute('data-index');
+                    var modal = document.getElementById('myModal' + index);
+                    modal.style.display = "block";
+                }
+            });
+        
+            // Event listener for closing modals
+            document.querySelectorAll('.close').forEach(span => {
+                span.onclick = function() {
+                    var modal = this.closest('.modal');
+                    modal.style.display = "none";
+                }
+            });
+        
+            // Click outside modal to close
+            window.onclick = function(event) {
+                if (event.target.classList.contains('modal')) {
+                    event.target.style.display = "none";
+                }
+            };
+        });
+    </script>     
 </head>
 <body>
     <h1>Recipes Based on Your Cart</h1>
@@ -14,6 +41,50 @@
             <h2>{{ recipe.title }}</h2>
             <img src="{{ recipe.image }}" alt="Recipe Image">
             <p>Likes: {{ recipe.likes }}</p>
+            <!-- Trigger/Open The Modal -->
+            <button class="myBtn" data-index="{{ loop.index }}">Details</button>
+
+            <!-- The Modal -->
+            <div id="myModal{{ loop.index }}" class="modal">
+
+                <!-- Modal content -->
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2>{{ recipe.title }}</h2>
+                    <img src="{{ recipe.image }}" alt="Recipe Image">
+                    <div>
+                        <h3>Used Ingredients: {{ recipe.usedIngredientCount }}</h3>
+                        <ul>
+                            {% for ingredient in recipe.usedIngredients %}
+                                <li>
+                                    {{ ingredient.name }}: {{ ingredient.amount }} {{ ingredient.unit }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>Missed Ingredients: {{ recipe.missedIngredientCount }}</h3>
+                        <ul>
+                            {% for ingredient in recipe.missedIngredients %}
+                                <li>
+                                    {{ ingredient.name }}: {{ ingredient.amount }} {{ ingredient.unit }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>Unused Ingredients: {{ recipe.unusedIngredientCount }}</h3>
+                        <ul>
+                            {% for ingredient in recipe.unusedIngredients %}
+                                <li>
+                                    {{ ingredient.name }}: {{ ingredient.amount }} {{ ingredient.unit }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <p>Likes: {{ recipe.likes }}</p>
+                </div>
+            </div>
         </div>
         {% endfor %}
     </div>
@@ -22,6 +93,7 @@
     </a>
     <!-- Navigation Buttons -->
     <div class="action-buttons">
+        <a id="backtocart" href="{{ url_for('cart') }}">Back to Cart</a>
         <a id="backtopantry" href="{{ url_for('pantry') }}">Back to Pantry</a>
     </div>
 </body>

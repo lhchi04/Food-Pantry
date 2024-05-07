@@ -37,6 +37,9 @@ li {
   padding: 10px;
   font-size: 18px;
   margin-bottom: 5px;
+  display: flex;  /* Enables flexbox */
+  justify-content: space-between;  /* Aligns children to each space between */
+  align-items: center;  /* Vertically centers the items in the list */
 }
 
 button {
@@ -106,6 +109,19 @@ button:hover {
   align-items: center;
 }
 
-#backtopantry:hover {
+#backtopantry:hover, #backtocart:hover {
   background-color: #274317; /* Dark red on hover */
+}
+
+.delete-button {
+  cursor: pointer;  /* Changes the mouse cursor to a pointer */
+  background: none;
+  border: none;
+  padding: 5px;  /* Pads the clickable area for easier clicking */
+}
+
+.delete-button svg {
+  stroke: #dc3545;  /* Colors the icon red for delete */
+  width: 24px;  /* Set width for the icon */
+  height: 24px;  /* Set height for the icon */
 }
