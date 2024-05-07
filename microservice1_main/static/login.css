@@ -4,10 +4,11 @@
 }
 
 /* 5f0f40, 9a031e, fb8b24, e36414, 0f4c5c */
+/* d1cdc4, 61603c, c2803a, 7a402e, bf5d30, 2f4d49 */
 body {
   font-family: Mops;
-  color:#5f0f40;
-  background-color: #0f4c5c;
+  color:#7a402e;
+  background-color: #2f4d49;
   padding: 20px;
   height: 100vh;
   display: flex;
@@ -32,18 +33,18 @@ body {
 
 h1 {
   font-size: 40px; /* Size of the website name */
-  color: #ffffff; /* Maintains the white color scheme */
+  color: #d1cdc4; /* Maintains the white color scheme */
 }
 
 h2 {
   font-size: 36px; /* Significantly larger font size for the "Login" header */
   font-weight: bold; /* Bolder weight for added impact */
   margin-bottom: 20px; /* More spacing to separate from form */
-  color: #fb8b24; /* Maintains the white color scheme */
+  color: #d1cdc4;
 }
 
 form {
-  background: rgba(255, 255, 255, 0.8); /* Semi-transparent white to soften the intense background */
+  background: #d1cdc4d5; /* Semi-transparent white to soften the intense background */
   padding: 20px;
   border-radius: 10px; /* Slightly larger radius for a softer look */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -54,7 +55,7 @@ input[type="text"], input[type="password"] {
   padding: 10px;
   margin-top: 5px;
   margin-bottom: 20px;
-  border: 2px solid #9a031e; /* Dark red for input borders */
+  border: 2px solid #7a402e; /* Dark red for input borders */
   border-radius: 6px; /* Rounded edges for inputs */
   box-sizing: border-box;
   font-size: 18px;
@@ -64,8 +65,8 @@ input[type="text"], input[type="password"] {
 button {
   width: 60%;
   font-family: Mops;
-  background-color: #5f0f406d; /* Darker shade initially */
-  color: white;
+  background-color: #7a402e9f; /* Darker shade initially */
+  color: #d1cdc4;
   font-size: 18px;
   padding: 12px;
   border: none;
@@ -78,7 +79,7 @@ button {
 
 button.active {
   /* Only extends when active */
-  background-color: #5f0f40;
+  background-color: #7a402e;
 }
 
 button.active:hover {
@@ -93,7 +94,7 @@ button.active:hover {
 }
 
 #account {
-  color: rgba(255, 255, 255, 0.8);
+  color: #d1cdc4d5;
 }
 
 .signup-link {
@@ -102,6 +103,6 @@ button.active:hover {
 }
 
 .signup-link a {
-  color: #fb8b24; /* Vivid orange links to stand out */
+  color: #ea8b25;
   font-weight: bold;
 }

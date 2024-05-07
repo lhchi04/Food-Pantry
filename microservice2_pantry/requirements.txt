@@ -2,3 +2,4 @@ Flask
 Flask-RESTful
 flask_swagger_ui
 requests
+flask_sqlalchemy

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Profile</title>
+    <title>Pantry Items</title>
     <!-- <link rel="stylesheet" href="./static/profile.css"> -->
     <style>
         @font-face {
@@ -11,11 +11,10 @@
             src: url('/static/fonts/mops.ttf') format('truetype');
         }
 
-
         body {
             font-family: Mops;
-            color: #5f0f40; /* Deep plum for text */
-            background-color: #0f4c5c; /* Dark teal background */
+            color: #7a402e;
+            background-color: #2f4d49;
             padding: 20px;
             display: flex;
             flex-direction: column;
@@ -25,13 +24,13 @@
         }
 
         h1 {
-            color: #ffffff; /* White color for headings */
+            color: #d1cdc4; /* White color for headings */
             font-size: 50px; /* Large font size for main heading */
             margin-bottom: 30px;
         }
 
         form {
-            background: rgba(255, 255, 255, 0.8); /* Semi-transparent background for form */
+            background: #d1cdc4d5; /* Semi-transparent background for form */
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -49,7 +48,7 @@
             padding: 10px;
             width: calc(100% - 20px);
             margin-bottom: 20px;
-            border: 2px solid #9a031e; /* Dark red border for inputs */
+            border: 2px solid #7a402e;
             border-radius: 6px;
             box-sizing: border-box;
             font-size: 18px;
@@ -57,8 +56,8 @@
 
         button, .action-buttons a {
             padding: 12px;
-            background-color: #5f0f40; /* Primary button color */
-            color: white;
+            background-color: #7a402e; /* Primary button color */
+            color: #e1ddd3;
             border-radius: 8px;
             cursor: pointer;
             border: none;
@@ -72,7 +71,7 @@
         }
 
         .action-buttons a:hover {
-            background-color: #9a031e; /* Dark red on hover */
+            background-color: #b50424; /* Dark red on hover */
         }
 
         .action-buttons {
@@ -82,7 +81,7 @@
         }
         #update_button {
             width: 60%;
-            background-color: #5f0f406d; /* Darker shade initially */
+            background-color: #7a402e9f;
             font-size: 18px;
             padding: 12px;
             border-radius: 8px; /* Rounded button edges */
@@ -90,27 +89,26 @@
             margin-right: 20%;
             transition: 450ms;
         }
-        #update_button:hover {
-            background-color: #5f0f406d;
-            transition: 150ms ease-in-out;
-        }
-
-        #update_button.active {
-            /* Only extends when active */
-            background-color: #5f0f40;
-        }
-
         #update_button.active:hover {
+            background-color: #7a402e;
+            transition: 150ms ease-in-out;
             width: 90%; /* Extend width when active and hovered */
             margin-left: 5%; /* Remove margin to allow full width */
             margin-right: 5%;
             border-radius: 10px;
-            color: #5f0f40;
-            background-color: #0f4d5c54;
+        }
+
+        #update_button.active {
+            background-color: #7a402e;
+        }
+
+        #backtopantry:hover, #backtocart:hover {
+            background-color: #d1cdc4;
+            transition: 150ms ease-in-out;
         }
 
         #backtopantry:hover {
-            background-color: #274317; /* Dark red on hover */
+            color: #7a402e
         }
 
         .success {

@@ -22,7 +22,7 @@ class PantryItem(db.Model):
 
 @app.route('/pantry_items')
 def home():
-    items = PantryItem.query.all()  # Retrieve all items from the PantryItems table
+    items = PantryItem.query.filter(PantryItem.Quantity > 0).all()  # Retrieve all items from the PantryItems table
     items_data = [item.to_dict() for item in items]  # Convert each item to a dictionary
     return jsonify(items_data)
 
