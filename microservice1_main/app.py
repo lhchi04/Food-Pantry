@@ -25,23 +25,29 @@ def login():
         response = requests.post(f'{USER_SERVICE_URL}/login', json=request.form.to_dict())
         if response.status_code == 200:
             response_data = response.json()
-            session['user_id'] = response_data.get('user_id')
-            session['username'] = response_data.get('username')
-            return redirect(url_for('pantry'))
+            if 'username' in response_data:
+                session['username'] = response_data['username']
+                return redirect(url_for('home'))
+            else:
+                return render_template('login.html', error='Login failed, please try again.')
         else:
             return render_template('login.html', error='Incorrect username or password.')
     return render_template('login.html')
+
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
         response = requests.post(f'{USER_SERVICE_URL}/signup', json=request.form.to_dict())
         if response.status_code == 201:
-            session['user_id'] = response.json()['user_id']
-            session['username'] = response.json()['username']
-            return redirect(url_for('pantry'))
+            response_data = response.json()
+            if 'username' in response_data:
+                session['username'] = response_data['username']
+                return redirect(url_for('home'))
+            else:
+                return render_template('signup.html', error='Signup failed, please try again.')
         else:
-            return render_template('signup.html', error='Username already exists')
+            return render_template('signup.html', error='Username already exists.')
     return render_template('signup.html')
 
 @app.route('/user_profile/<username>', methods=['GET', 'POST'])
