@@ -32,15 +32,15 @@ To build and run the application locally, follow these steps:
     ```
 2. **Build and push images**
     ```bash
-    docker build --platform linux/arm64,linux/amd64 -t lhchi04/main:0.1.3 .
-    docker build --platform linux/arm64,linux/amd64 -t lhchi04/user:0.1.3 .
-    docker build --platform linux/arm64,linux/amd64 -t lhchi04/pantry:0.1.3 .
-    docker build --platform linux/arm64,linux/amd64 -t lhchi04/recipe:0.1.3 .
+    docker build --platform linux/arm64,linux/amd64 -t username/main:0.1.4 .
+    docker build --platform linux/arm64,linux/amd64 -t username/user:0.1.4 .
+    docker build --platform linux/arm64,linux/amd64 -t username/pantry:0.1.4 .
+    docker build --platform linux/arm64,linux/amd64 -t username/recipe:0.1.4 .
 
-    docker push lhchi04/main:0.1.3
-    docker push lhchi04/user:0.1.3
-    docker push lhchi04/pantry:0.1.3
-    docker push lhchi04/recipe:0.1.3
+    docker push username/main:0.1.4
+    docker push username/user:0.1.4
+    docker push username/pantry:0.1.4
+    docker push username/recipe:0.1.4
     ```
 3. **Deploy to Kubernetes**
     ```bash
@@ -50,14 +50,35 @@ To build and run the application locally, follow these steps:
     ```bash
     kubectl get pods -A
     ```
-
 ## Application Usage Instructions
+Follow these steps to make the most of the features available.
+
+### 1. Registration and Login
+
+To access the Food Pantry, you first need to sign up.
+After registering, you will be lead to the pantry page.
+After signing up, your information is kept and you can log in next time.
+
+### 2. Managing Your Profile
+Click on your username icon at the top right of the page to view your profile.
+In your profile page, you can update your password or log out.
+
+### 3. Browsing the Pantry
+You can choose any ingredients that you want or have like dairy, grains, fruits, and vegetables and add to cart. You can go back and add more whenever you want.
+
+### 4. Managing Your Cart
+In the cart, you can remove items if needed.
+
+### 5. Generating Recipes
+With ingredients added to your cart, you can generate recipes based on your choice.
+You can view details of all recipes.
+
+### 6. Signing Out
+To logout, click on your username and select 'Logout' from the dropdown menu to exit securely.
 
 ## Component Diagram
 
 ![Architecture](./uml-diagram.png)
-
-## Screenshots/GIFs
 
 ## Dependencies
 - Flask-RESTful: An extension for Flask that adds support for quickly building REST APIs.
@@ -87,6 +108,13 @@ To build and run the application locally, follow these steps:
 ### Error Handling
 Appropriate error messages or status codes are transmitted between the microservices to handle exceptions and provide user feedback.
 
+## Screenshots/GIFs
+<img src="./gifs/login.gif" width="75%"/>
+<img src="./gifs/profile.gif" width="75%"/>
+<img src="./gifs/pantry.gif" width="75%"/>
+<img src="./gifs/cart.gif" width="75%"/>
+<img src="./gifs/recipe.gif" width="75%"/>
+
 ## Citations
 - Spoonacular API: https://spoonacular.com/food-api
 
@@ -98,19 +126,3 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - **Customization**: Adjust paths and namespaces according to your actual Kubernetes setup and directory structure.
 
 This README provides a comprehensive guide for developers to set up and understand the Food Pantry application, including instructions for building, deploying, and maintaining the application. Adjust the document according to the specific paths and settings of your project structure as needed.
-
-docker build --platform linux/arm64,linux/amd64 -t lhchi04/main:0.1.1 .
-docker push lhchi04/main:0.1.1
-docker build --platform linux/arm64,linux/amd64 -t lhchi04/user:0.1.1 .
-docker push lhchi04/user:0.1.1
-docker build --platform linux/arm64,linux/amd64 -t lhchi04/pantry:0.1.1 .
-docker push lhchi04/pantry:0.1.1
-docker build --platform linux/arm64,linux/amd64 -t lhchi04/recipe:0.1.1 .
-docker push lhchi04/recipe:0.1.1
-    ```
-3. 
-    ```bash
-kubectl delete -f kubernetes/others
-kubectl rollout restart -f deployment.yaml
-kubectl apply -f kubernetes/others
-kubectl get pods -A
