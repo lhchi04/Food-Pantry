@@ -2,6 +2,7 @@
   font-family: Mops;
   src: url(mops.ttf);
 }
+/* d1cdc4, 61603c, c2803a, 7a402e, bf5d30, 2f4d49 */
 
 * {
   box-sizing: border-box;
@@ -20,16 +21,17 @@
 
 body {
   font-family: Mops;
-  color: #5f0f40; /* Deep plum for text */
-  background-color: #0f4c5c; /* Dark teal background */
+  color: #2f4d49;
+  background-color: #7a402e;
   padding: 20px;
   min-height: 100vh;
 }
 
 h1 {
   font-size: 40px;
-  color: #ffffff; /* White color for headings */
+  color: #d1cdc4;
   margin-bottom: 40px;
+  margin-left: 40px;
 }
 
 h2 {
@@ -42,7 +44,7 @@ h2 {
 
 .recipe {
   position: relative;
-  background: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+  background: #d1cdc4; /* Semi-transparent white background */
   padding: 20px;
   padding-bottom: 10px;
   border-radius: 10px;
@@ -83,30 +85,38 @@ h2 {
 
 .action-buttons a {
   padding: 12px;
-  background-color: #5f0f40; /* Primary button color */
+  background-color: #c2803a; /* Primary button color */
   color: white;
   border-radius: 8px;
   cursor: pointer;
   border: none;
   text-decoration: none;
-  transition: background-color 0.3s ease;
+  transition: 450ms;
   display: block;
-  width: 100%;
+  width: 30%;
+  margin-left: 35%;
+  margin-right: 35%;
   text-align: center;
   margin-bottom: 10px;
   font-family: Mops;
 }
 
 .action-buttons a:hover {
-  background-color: #9a031e;
+  background-color: #d1cdc4;
+  color: #7a402e;
+  width: 50%;
+  margin-left: 25%;
+  margin-right: 25%;
+  transition: 150ms ease-in-out;
+  border-radius: 12px;
 }
 
 .profile-link {
   position: absolute;
   top: 20px;
   right: 20px;
-  background-color: #9a031e; /* Vivid orange */
-  color:rgba(255, 255, 255, 0.8);
+  background-color: #61603c;
+  color: #f1efea;
   padding: 10px;
   border-radius: 5px;
   text-decoration: none;
@@ -115,8 +125,8 @@ h2 {
 }
 
 .profile-link:hover {
-  background-color: #ffffff5f;
-  color:rgb(255, 255, 255);
+  background-color: #d1cdc4;
+  color: #7a402e;
 }
 
 /* The Modal (background) */
@@ -135,7 +145,7 @@ h2 {
 
 /* Modal Content/Box */
 .modal-content {
-  background-color: #fefefe;
+  background-color: #d1cdc4;
   margin: 15% auto; /* 15% from the top and centered */
   padding: 20px;
   border: 1px solid #888;
@@ -158,7 +168,7 @@ h2 {
 
 .close:hover,
 .close:focus {
-  color: black;
+  color: #7a402e;
   text-decoration: none;
   cursor: pointer;
 }
@@ -169,8 +179,8 @@ h2 {
   position: absolute;
   transform: translateX(-50%); /* Center horizontally */
   padding: 10px;
-  color: #5f0f40;
-  background-color: #e0dede;
+  color: #2f4d49;
+  background-color: #d1cdc4;
   border: none;
   border-radius: 10px;
   cursor: pointer;

@@ -32,15 +32,15 @@ To build and run the application locally, follow these steps:
     ```
 2. **Build and push images**
     ```bash
-    docker build --platform linux/arm64,linux/amd64 -t username/main:0.1.0 .
-    docker build --platform linux/arm64,linux/amd64 -t username/user:0.1.0 .
-    docker build --platform linux/arm64,linux/amd64 -t username/pantry:0.1.0 .
-    docker build --platform linux/arm64,linux/amd64 -t username/recipe:0.1.0 .
+    docker build --platform linux/arm64,linux/amd64 -t lhchi04/main:0.1.3 .
+    docker build --platform linux/arm64,linux/amd64 -t lhchi04/user:0.1.3 .
+    docker build --platform linux/arm64,linux/amd64 -t lhchi04/pantry:0.1.3 .
+    docker build --platform linux/arm64,linux/amd64 -t lhchi04/recipe:0.1.3 .
 
-    docker push username/main:0.1.0
-    docker push username/user:0.1.0
-    docker push username/pantry:0.1.0
-    docker push username/recipe:0.1.0
+    docker push lhchi04/main:0.1.3
+    docker push lhchi04/user:0.1.3
+    docker push lhchi04/pantry:0.1.3
+    docker push lhchi04/recipe:0.1.3
     ```
 3. **Deploy to Kubernetes**
     ```bash
@@ -48,7 +48,7 @@ To build and run the application locally, follow these steps:
     ```
 4. **Verify deployment**
     ```bash
-    kubectl get pods
+    kubectl get pods -A
     ```
 
 ## Application Usage Instructions
