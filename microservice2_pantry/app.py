@@ -50,10 +50,24 @@ def view_cart():
     cart_items = {PantryItem.query.get(item_id).Name: qty for item_id, qty in global_cart_contents.items() if PantryItem.query.get(item_id)}
     return jsonify(cart_items)
 
-# @app.route('/api/cart_contents')
-# def api_cart_contents():
-#     cart_contents = {PantryItem.query.get(item_id).Name: qty for item_id, qty in global_cart_contents.items() if PantryItem.query.get(item_id)}
-#     return jsonify(cart_contents)
+@app.route('/delete_from_cart', methods=['POST'])
+def delete_from_cart():
+    data = request.get_json()
+    item_name = data['item_name']
+    quantity = int(data['quantity'])  # Quantity to be added back to the stock
+
+    # Query the database for the PantryItem
+    item = PantryItem.query.filter_by(Name=item_name).first()
+    
+    if item is None:
+        return jsonify({'error': f'Item "{item_name}" not found in the pantry.'}), 404
+    # Add back the quantity to the item in the database
+    item.Quantity += quantity
+    db.session.commit()
+
+    # Remove the item from the global cart
+    global_cart_contents.pop(item.ID)
+    return redirect(url_for('view_cart'))
 
 if __name__ == '__main__':
     app.run(debug=True, port=5003)

@@ -2,10 +2,6 @@ import os
 import requests
 from flask import Flask, request, jsonify, redirect, render_template, session, url_for, flash, request
 from flask_restful import Api
-import logging
-
-# Configure basic logging
-logging.basicConfig(level=logging.DEBUG)
 
 # Configuration
 USER_SERVICE_URL = os.getenv('USER_SERVICE_URL', 'http://localhost:5002')
@@ -123,22 +119,14 @@ def cart():
 @app.route('/delete_from_cart/<item_name>', methods=['POST'])
 def delete_from_cart(item_name):
     data = request.get_json()
-    logging.debug(f"Received data for {item_name}: {data}")
     quantity = data.get('quantity')
     if quantity is None:
-        logging.error("No quantity provided in the request.")
         flash('Quantity not provided.', 'error')
         return redirect(url_for('cart'))
-    # Send request to pantry service to update the global cart and inventory
     response = requests.post(f'{PANTRY_SERVICE_URL}/delete_from_cart', json={
         'item_name': item_name,
         'quantity': quantity
     })
-    if response.ok:
-        flash('Item deleted successfully!', 'success')
-    else:
-        flash('Failed to update pantry cart.', 'error')
-        logging.error(f"Failed to update pantry cart: {response.text}")
     return redirect(url_for('cart'))
 
 @app.route('/get_recipes', methods=['POST'])
