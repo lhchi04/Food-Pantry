@@ -25,11 +25,9 @@ def login():
         response = requests.post(f'{USER_SERVICE_URL}/login', json=request.form.to_dict())
         if response.status_code == 200:
             response_data = response.json()
-            if 'username' in response_data:
-                session['username'] = response_data['username']
-                return redirect(url_for('home'))
-            else:
-                return render_template('login.html', error='Login failed, please try again.')
+            session['username'] = response_data['username']
+            session['user_id'] = response_data['user_id']
+            return redirect(url_for('pantry'))
         else:
             return render_template('login.html', error='Incorrect username or password.')
     return render_template('login.html')
@@ -41,11 +39,9 @@ def signup():
         response = requests.post(f'{USER_SERVICE_URL}/signup', json=request.form.to_dict())
         if response.status_code == 201:
             response_data = response.json()
-            if 'username' in response_data:
-                session['username'] = response_data['username']
-                return redirect(url_for('pantry'))
-            else:
-                return render_template('signup.html', error='Signup failed, please try again.')
+            session['username'] = response_data['username']
+            session['user_id'] = response_data['user_id']
+            return redirect(url_for('pantry'))
         else:
             return render_template('signup.html', error='Username already exists.')
     return render_template('signup.html')
@@ -84,12 +80,13 @@ def user_profile(username):
 
 @app.route('/logout')
 def logout():
-    session.clear()  # Clears all data in the session
+    session.pop('username', None)
+    session.clear()
     return redirect(url_for('login'))
 
 @app.route('/pantry', methods=['GET', 'POST'])
 def pantry():
-    if 'user_id' not in session:
+    if 'username' not in session:
         return redirect(url_for('login'))
     if request.method == 'GET':
         response = requests.get(f'{PANTRY_SERVICE_URL}/pantry_items')

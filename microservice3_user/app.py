@@ -1,5 +1,5 @@
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, session
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
@@ -60,7 +60,6 @@ def profile(username):
 @app.route('/status')
 def status():
     return jsonify({'status': 'OK'}), 200
-
 
 if __name__ == '__main__':
     app.run(debug=True, port=5002)
