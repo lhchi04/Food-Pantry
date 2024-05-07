@@ -155,7 +155,8 @@ h2 {
 .modal-content img {
   width: 50%; /* Smaller image size */
   height: auto;
-  justify-content : center;
+  margin-left: 25%;
+  margin-right: 25%;
 }
 
 /* The Close Button */

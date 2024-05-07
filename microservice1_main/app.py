@@ -43,7 +43,7 @@ def signup():
             response_data = response.json()
             if 'username' in response_data:
                 session['username'] = response_data['username']
-                return redirect(url_for('home'))
+                return redirect(url_for('pantry'))
             else:
                 return render_template('signup.html', error='Signup failed, please try again.')
         else:
