@@ -44,6 +44,7 @@ To build and run the application locally, follow these steps:
     ```
 3. **Deploy to Kubernetes**
     ```bash
+    kubectl apply -f kubernetes/init
     kubectl apply -f kubernetes/others
     ```
 4. **Verify deployment**
