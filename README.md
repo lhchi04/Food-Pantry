@@ -79,12 +79,11 @@ To logout, click on your username and select 'Logout' from the dropdown menu to 
 ## Component Diagram
 
 ![Architecture](./uml-diagram.png)
+(This diagram reflects our ideal of having a database integrated in the program; however due to technical difficulties in attempting to run the app on GKE, the final repo has dict to store the data in microservice2_pantry and microservice3_user)
 
 ## Dependencies
 - Flask-RESTful: An extension for Flask that adds support for quickly building REST APIs.
 - spoonacular API: An API for recipe generation and food data.
-- SQLite: A C library that provides a lightweight disk-based database and allows accessing the database using a nonstandard variant of the SQL query language.
-- SQLAlchemy: A SQL toolkit and Object-Relational Mapping (ORM) system for Python.
 - Kubernetes: An open-source container orchestration platform for automating deployment, scaling, and management of containerized applications.
 - Docker: A platform for developing, shipping, and running applications in containers.
 
